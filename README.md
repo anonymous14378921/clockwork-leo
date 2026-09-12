@@ -14,7 +14,7 @@ Clockwork relies on two algorithms:
 ```bash
 pip install -e .                  # install the package
 just test                         # run the test suite
-just run pA_slo_sweep             # run an experiment
+just run slo_sweep                # run an experiment
 ```
 
 Requires Python >= 3.9 and [just](https://github.com/casey/just). CPU only, no GPU needed.
@@ -67,7 +67,7 @@ See the **[Wiki](../../wiki)** for full companion documentation:
 Every experiment is invoked through the justfile:
 
 ```bash
-just run <experiment>     # e.g., just run pK_calendar
+just run <experiment>     # e.g., just run calendar_scheduling
 ```
 
 Each run writes its configuration, source revision, and hardware manifest into `results/<experiment>/<timestamp>/` for full provenance.
