@@ -1,0 +1,11 @@
+# Illustrative trace, fixed before examining schedules. Same setup as pK.
+seed: 0
+provider: mvp-main
+aoi: {lat: 48.21, lon: 16.37}
+slo_ms: 300
+n_steps: 1440
+cost_slack: 5
+switch_cost: 5
+horizons_min: [5, 15, 60]
+display_start_s: 0
+display_end_s: 7200

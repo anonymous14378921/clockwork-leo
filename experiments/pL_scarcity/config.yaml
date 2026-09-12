@@ -1,0 +1,16 @@
+# Experiment L (scarcity sweep): where does joint provisioning stop
+# mattering? The Star shell's fleet is swept from accelerator-rich to
+# accelerator-poor by the number of hub planes (each hub: 4 gpu_small +
+# 2 gpu_large) with the rest base (cpu only); the Delta keeps mvp-main's
+# fleet. All methods, fixed SLO, evenly spaced cycle epochs. Shows the
+# boundary of the advantage in both directions: with many hubs single-plane
+# provisioning suffices, with none nothing serves.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+fleet_seeds: [0, 1, 2, 3, 4]
+n_epochs: 8
+star_hubs: [0, 1, 2, 3, 4, 6, 12]
+hub_profile:  {cpu: 10, gpu_small: 4, gpu_large: 2}
+base_profile: {cpu: 16}

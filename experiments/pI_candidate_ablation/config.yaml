@@ -1,0 +1,12 @@
+# Experiment I (verification): candidate restriction ablation. Solve every
+# instance twice with the label search, once with the default candidate
+# restriction (visible + non-cpu + K nearest cpu) and once over EVERY
+# satellite (full_candidates). Optimal costs must agree; runtimes are
+# reported for both. A mismatch anywhere is a restriction bug and is
+# recorded, not hidden.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slos_ms: [200, 300, 500, 1000]
+fleet_seeds: [0, 1, 2]
+n_epochs: 8

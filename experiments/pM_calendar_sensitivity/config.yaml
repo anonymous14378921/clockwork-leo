@@ -1,0 +1,17 @@
+# Experiment M (Clockwork sensitivity): the two approximations of the
+# calendar planner. (1) pool slack Delta: how many states the pool holds
+# and whether the calendar's cost, reprovisions, and planning time change
+# with it; (2) temporal resolution: whether cost and reprovisions converge
+# as the cycle grid is refined. One fleet seed (each cell is a full pool +
+# table pass), fixed switching cost.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+fleet_seed: 0
+switch_cost: 5
+slacks: [0, 2, 5, 10]
+n_steps_slack: 1440
+n_steps_list: [720, 1440, 2880]
+slack_steps: 5
+workers: 4

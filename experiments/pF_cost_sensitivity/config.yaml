@@ -1,0 +1,15 @@
+# Experiment F (VI-G): cost-vector sensitivity. Do the qualitative results
+# survive reasonable changes to the normalized cost model? Three hardware
+# regimes x three plane-activation costs; ACE vs cheapest_single vs
+# greedy_compose at a tight, a medium, and a loose SLO.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slos_ms: [200, 300, 1000]
+fleet_seeds: [0, 1, 2, 3, 4]
+n_epochs: 4
+hw_regimes:
+  flat:      {cpu: 1.0, gpu_small: 1.5, gpu_large: 2.0}
+  moderate:  {cpu: 1.0, gpu_small: 4.0, gpu_large: 10.0}
+  accel_exp: {cpu: 1.0, gpu_small: 8.0, gpu_large: 30.0}
+plane_costs: [2.0, 5.0, 15.0]

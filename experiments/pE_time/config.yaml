@@ -1,0 +1,13 @@
+# Experiment E v3: provisioning under orbital dynamics (VI-E). Replanning
+# POLICIES compared over one cycle (a sidereal day): event-driven (replace
+# only when infeasible after ingress handover), fixed periods, and
+# always-fresh. All policies get ingress handover within their activated
+# planes (fair); the scheduling discipline is the only difference. The
+# cycle is sampled on n_steps evenly spaced instants. 3 fleet seeds.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+n_steps: 1440
+fleet_seeds: [0, 1, 2]
+periodic_s: [60, 300, 900, 1800, 3600]

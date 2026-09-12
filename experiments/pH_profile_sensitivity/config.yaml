@@ -1,0 +1,13 @@
+# Experiment H (sensitivity): execution-profile perturbation. Every
+# (component, hardware) execution latency is multiplied by an independent
+# seeded factor drawn uniformly from [1-eps, 1+eps]; the headline claims
+# are re-checked per draw (survivor counts, no silent averaging away).
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slos_ms: [200, 300, 500]
+fleet_seeds: [0, 1, 2, 3, 4]
+n_epochs: 8
+perturbation_eps: 0.2
+n_draws: 20
+methods: [ace, cheapest_single, greedy_compose]

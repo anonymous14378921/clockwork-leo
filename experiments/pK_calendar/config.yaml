@@ -1,0 +1,33 @@
+# Experiment K (Clockwork): the periodic provisioning calendar over one
+# cycle vs reactive policies on the SAME instants and candidate states.
+# (1) switching-cost sweep: reserved unit-hours vs reprovisions per cycle
+#     traced by the switching cost (the calendar's Pareto curve; reactive
+#     policies are single points);
+# (2) pre-staging: a reprovision takes staging_s to come up for reactive
+#     policies (model staging), the calendar pre-stages at scheduled
+#     boundaries; served fraction vs staging time;
+# All policies run two cycles, the second reported (initialization and
+# the cycle boundary treated alike); reactive policies are reported dark
+# (unserved while staging) and prestaged (overlap paid).
+# (3) day two: on the repeat-track shells and on the near-repeat shells
+#     (550/800 km), day one's plan reused on day two vs day two planned
+#     from its own geometry starting from day one's end state; served
+#     fraction against the day-two ceiling. Reuse survives only where the
+#     AoI geometry repeats; recomputation works everywhere.
+# Candidate pool: every nondominated per-instant plan within cost_slack
+# of the instant's optimum (one plane activation), plus release variants.
+seed: 0
+provider: mvp-main
+drift_providers: [mvp-main-nearrepeat, mvp-main-nonrepeat]   # 550/800 and 600/1000 km
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+n_steps: 1440
+fleet_seeds: [0, 1, 2]
+cost_slack: 5.0
+switch_costs: [0, 0.5, 1, 2, 5, 10, 20, 50]
+drift_switch_cost: 5
+staging_s: [0, 30, 60, 120, 300]
+# (4) rolling horizon: the calendar DP over the next H minutes from the
+#     incumbent, first decision applied, at the default switching cost.
+horizons_min: [5, 15, 60, 180]
+workers: 3

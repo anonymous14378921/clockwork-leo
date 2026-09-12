@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/polaris-slo-cloud/hyper-drive",
+  "commit": "94d753a4da15339268423e4141a2c086974ac507",
+  "sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "config_helper.py": "00fdfb37fa4249d15e149bb5a17e99edd206e3f2c5b1cecad5e065e3c1c486c2",
+    "heat_opt.py": "f25c68751c9b8847df097ebcb47c1d5204c7884a6d68368f9e00c208ec909b5c",
+    "multi_commit.py": "54570d50a16a2f51a0670d88c038e57cb864a909fc9bf1d9fa88fe62329f347a",
+    "network_qos.py": "35868cfd0cb0dd13ec785ceec540153ffcc72c51adc1ca46493547129b62b325",
+    "resources_fit.py": "0def14b1e9915d4614dedb7380ee55afc3127f62257f40846a8d368cdb5b6a50",
+    "scheduler.py": "053a0d1d0ba69bfdab9705a9ded24277792ec009a75159a095213e9d70a0c819",
+    "select_nodes_in_vicinity.py": "c7f2a86f254dd89b0a1514cf747944d8751daceb8f61bf5fdecaff8a1b65b806"
+  }
+}

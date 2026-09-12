@@ -1,0 +1,4 @@
+# E0 worked example (go/no-go). The instance (constellation, fleet, pipeline,
+# SLO) lives in constants.yaml under `e0`; this config only fixes the random
+# placement of the sparse-strong H100 nodes so k is reproducible.
+seed: 0

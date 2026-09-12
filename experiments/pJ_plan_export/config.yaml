@@ -1,0 +1,16 @@
+# Experiment J (inspection): export example optimal plans for every SLO
+# with full structure (ingress, compute planes, stage-to-satellite
+# placements, edges, latency decomposition incl. the return leg, cost).
+# The example instance is the FIRST cycle epoch at which ACE is feasible at
+# the tightest SLO (seed below), a rule fixed before looking at outcomes.
+# Also diagnoses WHY tight-SLO solutions activate multiple planes, per
+# instance across all seeds and epochs: hardware absence vs latency vs a
+# cheaper multi-plane composition although one plane would do.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slos_ms: [200, 300, 500, 1000]
+example_seed: 0
+n_epochs: 8
+diagnose_slo_ms: 200
+diagnose_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

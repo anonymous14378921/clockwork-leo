@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clockwork-leo"
+version = "0.1.0"
+description = "Clockwork: Scheduling Compound AI Workflows in Space Data Centers."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml>=6",
+    "numpy>=1.24",
+    "pandas>=2",
+    "networkx>=3",
+    "pulp>=2.7",
+    "geopy==2.4.1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

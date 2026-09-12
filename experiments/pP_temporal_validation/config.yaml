@@ -1,0 +1,9 @@
+source_run: results/pO_pollux_timeline/20260908-210755
+provider: mvp-main
+aoi: {lat: 48.21, lon: 16.37}
+seed: 0
+slo_ms: 300
+planning_steps: 1440
+replay_steps_s: [5, 1]
+workers: 8
+

@@ -1,0 +1,13 @@
+# Experiment N (Section II, Figure 2): one day of the service seen from the
+# region. Per instant over one cycle: visible satellites and planes, the
+# cost of the cheapest feasible placement, whether any single visible plane
+# can meet the deadline, and the day-two replay (same instant plus one
+# cycle) on the repeat-track and the near-repeat provider. Per satellite
+# and per plane: contiguous visibility intervals (pass durations). One
+# fleet seed, stated in the caption.
+seed: 0
+provider: mvp-main
+drift_provider: mvp-main-nearrepeat
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+n_steps: 1440

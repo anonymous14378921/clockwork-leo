@@ -1,0 +1,23 @@
+# Experiments B+C v2: Geographic and Shell-Level Provisioning. Evenly
+# spaced SHARED epochs over the cycle (no favorable-epoch sampling) with
+# medians over epochs x seeds. Primary axis: a latitude sweep (lon fixed);
+# the named AoIs remain as examples. Infeasible cells are outcomes.
+seed: 0
+# Symmetric provider (2026-09-01): identical hardware distributions in both
+# shells so the sweep isolates orbital geometry from fleet composition.
+provider: mvp-main-symmetric
+slo_ms: 300
+fleet_seeds: [0, 1, 2, 3, 4]
+n_epochs: 8
+latitudes: [0, 15, 30, 45, 60, 75]
+sweep_lon: 16.37
+named_aois:
+  - {name: equator,   lat: 0.0,   lon: 20.0}
+  - {name: n_america, lat: 40.0,  lon: -100.0}
+  - {name: main,    lat: 48.21, lon: 16.37}
+  - {name: n_europe,  lat: 60.0,  lon: 15.0}
+  - {name: arctic,    lat: 75.0,  lon: 0.0}
+portfolios:
+  star_only: [star_1]
+  delta_only: [delta_1]
+  both: [star_1, delta_1]

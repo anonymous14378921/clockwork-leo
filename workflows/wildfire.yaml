@@ -1,0 +1,55 @@
+# wildfire.yaml — primary compound-AI workflow (v2, cascade reframe 2026-08-25).
+#
+# Wildfire monitoring over an AoI. Data volume collapses from hundreds of MB at
+# ingest to KB at alert. The accuracy-bearing part is a Compass-style detection
+# CASCADE: a light detector processes every crop, and crops whose confidence
+# falls below a threshold are forwarded to a heavier verifier. Workflow accuracy
+# is the MEASURED end-to-end mAP@0.5 of the cascade configuration
+# (detector, verifier, threshold), following the Compass evaluation protocol;
+# no composition formula, no recall-factor multiplication (dropped 2026-08-25).
+# The measured grid comes from the Compass artifact or our own rerun of its
+# open-source pipeline; until it lands, lab.configurations serves a
+# clearly-flagged placeholder grid (prov: estimate).
+#
+# component fields:
+#   kind        ml | fixed | io
+#   role        cascade-detector | cascade-verifier (ml components)
+#   flops       fixed GFLOPs cost (fixed components), in units of 1e9
+#   out_bytes   data volume emitted onto the outgoing edge(s)
+#   path_class  slack -> this component's root-to-sink paths get the slack SLO
+#               (slo * slack_factor), modeling the report path being slower than
+#               the alert path (per-path SLOs)
+name: wildfire
+provenance: estimate
+accuracy: measured-cascade      # end-to-end mAP@0.5 per configuration
+cascade:
+  detect_stage: detect
+  verify_stage: verify
+  detectors: [YOLOv8n, YOLOv8s, YOLOv8m]
+  verifiers: [YOLOv8m, YOLOv8l, YOLOv8x, none]
+  # Seven thresholds spanning 0.1-0.5 (Compass VI.B); tick values aligned to the
+  # artifact grid when it lands.
+  thresholds: [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
+  ladder: yolo_coco             # per-device measured latency profiles
+slo_slack_factor: 3.0           # slack paths tolerate slack_factor * SLO (estimate)
+components:
+  - {id: ingest,  kind: io,    out_bytes: 150.0e6, note: "multispectral tile, ~150 MB"}
+  - {id: screen,  kind: fixed, flops: 5.0e9, out_bytes: 10.0e6,
+     note: "thermal anomaly screen, data collapse 150 MB -> 500 crops (~10 MB); no accuracy role"}
+  - {id: detect,  kind: ml,    role: cascade-detector, crops_per_tile: 500, out_bytes: 10.0e6,
+     note: "light fire detector; out_bytes is the crop pool a verifier could receive (scaled by forward fraction)"}
+  - {id: verify,  kind: ml,    role: cascade-verifier, out_bytes: 5.0e5,
+     note: "heavy verifier, receives forward fraction phi(detector, threshold) of crops; verifier=none contracts this stage away"}
+  - {id: spread,  kind: fixed, flops: 2.0e9, out_bytes: 1.0e6,
+     note: "spread-risk estimation, fixed cost"}
+  - {id: vlm,     kind: fixed, flops: 4000.0e9, out_bytes: 5.0e3, path_class: slack,
+     note: "LLaVA-class situation report, ONE fixed size, quality not scored; exists to exercise the multi-path SLO (report path is slack). FLOPs estimate ~7B model, short generation"}
+  - {id: alert,   kind: io,    out_bytes: 10.0e3, note: "alert dissemination, ~10 KB"}
+edges:
+  - [ingest, screen]
+  - [screen, detect]
+  - [detect, verify]
+  - [verify, spread]
+  - [verify, vlm]
+  - [spread, alert]
+  - [vlm, alert]

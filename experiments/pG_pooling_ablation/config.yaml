@@ -1,0 +1,11 @@
+# Experiment G (ablation): plane-pooled approximation vs satellite-level
+# model. For satellite-level ACE plans, compute the latency the PLANE-POOLED
+# abstraction would have predicted (anchor-based plane-pair routes, one
+# intra-plane hop for co-plane components, best-visible-of-plane access and
+# egress) and report the prediction error and feasibility flips.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slos_ms: [200, 300, 500, 1000]
+fleet_seeds: [0, 1, 2, 3, 4]
+n_epochs: 8

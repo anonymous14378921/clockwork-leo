@@ -1,0 +1,25 @@
+# Fixed compound AI workflow for the provisioning MVP (pivot 2026-08-31).
+# NO variants, NO accuracy values: the workflow arrives already optimized
+# (professor's service model). Chain per the MVP plan. Payloads in MB.
+# Component execution latencies live in data/profiles/workflow_mvp.csv.
+name: mvp_fixed
+components: [detector, classifier, llm]   # image source and result sink are I/O
+# Service model (Clockwork decision, 2026-09-01). `source: satellite` means
+# the image is captured on the AoI-visible ingress satellite, so the first
+# edge pays ISL hops only when the detector sits elsewhere. `source: ground`
+# is the alternative ingress: the request uplinks its payload from the AoI
+# (access + uplink serialization). The result always returns to the ground:
+# from the last component's satellite to the nearest AoI-visible satellite
+# and down (sink payload at the downlink rate).
+source: satellite
+sink: {payload_mb: 0.01}                  # result report, prov: estimate
+edges:
+  aoi_detector:        {payload_mb: 8.0}    # captured image
+  detector_classifier: {payload_mb: 2.8}
+  classifier_llm:      {payload_mb: 0.04}
+# Normalized per-component resource demands, fraction of one satellite's
+# capacity (1.0). prov: estimate, rough relative compute footprint by model
+# size. Single-tenant and load-independent: a satellite is reserved whole,
+# demands bound how many components fit on it (detector+classifier fit
+# together, classifier+llm fit together, detector+llm do not).
+demands: {detector: 0.5, classifier: 0.25, llm: 0.75}

@@ -1,0 +1,13 @@
+# Experiment D (H3): hardware heterogeneity. Same AoI/SLO/workload, four
+# fleets; the homogeneous fleet is the PREDICTED negative control (baselines
+# should tie ACE there). Infeasible outcomes are rows, never dropped.
+seed: 0
+aoi: {name: main, lat: 48.21, lon: 16.37}
+slo_ms: 300
+fleet_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+fleets:
+  homogeneous: mvp-main-uniform
+  uniform_matched: mvp-main-uniform-matched
+  moderate: mvp-main
+  strong: mvp-main-scarce
+n_epochs: 8

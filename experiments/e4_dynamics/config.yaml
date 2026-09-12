@@ -1,0 +1,14 @@
+# E4 dynamics (EQ4): validity windows vs planning time, slice churn.
+seed: 0
+workflow: wildfire
+instances:
+  - {constellation: ref-star,    aoi: mid_latitude}
+  - {constellation: ref-star,    aoi: arctic}
+  - {constellation: starlink-s1, aoi: mid_latitude}
+capable_fraction: 0.05
+fleet_seeds: [0, 1, 2]
+slo_s: 2.0
+candidates_k: 3
+churn_dt_s: 30.0
+churn_horizon_s: 5760.0    # one ref-star orbital period, ~96 min
+dwell_dt_s: 5.0

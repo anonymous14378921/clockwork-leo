@@ -1,0 +1,214 @@
+# Provider specification for the min-cost provisioning MVP (pivot 2026-08-31).
+# Two providers: mvp-gate (tiny, the sanity gate of the master setup) and
+# mvp-main (the experiment scale from the MVP plan). Hardware classes are
+# assigned per satellite from seeded per-shell fractions; plane capacity is the
+# aggregated unit count per class. Costs are NORMALIZED PROVISIONING COST
+# UNITS, not dollars (prov: estimate, sensitivity-swept).
+
+hardware_classes: [cpu, gpu_small, gpu_large]
+
+costs:
+  hardware: {cpu: 1.0, gpu_small: 4.0, gpu_large: 10.0}
+  plane_activation: 5.0
+
+providers:
+  mvp-gate:
+    shells:
+      - id: star_g
+        type: walker_star
+        altitude_km: 550.0
+        inclination_deg: 87.0
+        planes: 4
+        sats_per_plane: 8
+        phasing_f: 1
+        hw_fractions: {cpu: 0.625, gpu_small: 0.25, gpu_large: 0.125}
+      - id: delta_g
+        type: walker_delta
+        altitude_km: 800.0
+        inclination_deg: 53.0
+        planes: 4
+        sats_per_plane: 8
+        phasing_f: 1
+        hw_fractions: {cpu: 0.75, gpu_small: 0.25, gpu_large: 0.0}
+  # REPEAT-GROUND-TRACK altitudes (Clockwork decision, 2026-09-01): the Star
+  # at 561 km completes exactly 15 and the Delta at 888 km exactly 14
+  # revolutions per sidereal day (constants.yaml cycle), so every mvp-main
+  # variant repeats its AoI-relative geometry once per cycle. The gate keeps
+  # its original altitudes (correctness fixture, not an evaluation instance).
+  # PLANE-STRUCTURED fleets (2026-09-01): hardware is scarce and uneven
+  # ACROSS planes (hub planes carry the GPUs, base planes are cpu-only),
+  # which is the regime where location and composition matter. The uniform
+  # per-satellite variant remains available via hw_fractions for the
+  # homogeneous control of Experiment D.
+  mvp-main:
+    shells:
+      - id: star_1
+        type: walker_star
+        revs_per_sidereal_day: 15   # exact repeat track (561.383 km)
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 2, hw: {cpu: 10, gpu_small: 4, gpu_large: 2}}
+          edge: {count: 3, hw: {cpu: 12, gpu_small: 4}}
+          base: {count: 7, hw: {cpu: 16}}
+      - id: delta_1
+        type: walker_delta
+        revs_per_sidereal_day: 14   # exact repeat track (887.686 km)
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 1, hw: {cpu: 12, gpu_small: 3, gpu_large: 1}}
+          edge: {count: 3, hw: {cpu: 13, gpu_small: 3}}
+          base: {count: 8, hw: {cpu: 16}}
+  # NEAR-REPEAT control for the stale-calendar drift experiment: the same
+  # fleets at the original 550/800 km, where the shells make 15.037 and
+  # 14.258 revolutions per sidereal day, so a calendar computed for the
+  # repeat-track shells drifts by minutes per cycle when replayed here.
+  mvp-main-nearrepeat:
+    shells:
+      - id: star_1
+        type: walker_star
+        altitude_km: 550.0
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 2, hw: {cpu: 10, gpu_small: 4, gpu_large: 2}}
+          edge: {count: 3, hw: {cpu: 12, gpu_small: 4}}
+          base: {count: 7, hw: {cpu: 16}}
+      - id: delta_1
+        type: walker_delta
+        altitude_km: 800.0
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 1, hw: {cpu: 12, gpu_small: 3, gpu_large: 1}}
+          edge: {count: 3, hw: {cpu: 13, gpu_small: 3}}
+          base: {count: 8, hw: {cpu: 16}}
+  # NON-REPEAT control, farther from the repeat altitudes (2026-09-05):
+  # 600 / 1000 km, same fleets. Day-two geometry differs from day one.
+  mvp-main-nonrepeat:
+    shells:
+      - id: star_1
+        type: walker_star
+        altitude_km: 600.0
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 2, hw: {cpu: 10, gpu_small: 4, gpu_large: 2}}
+          edge: {count: 3, hw: {cpu: 12, gpu_small: 4}}
+          base: {count: 7, hw: {cpu: 16}}
+      - id: delta_1
+        type: walker_delta
+        altitude_km: 1000.0
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 1, hw: {cpu: 12, gpu_small: 3, gpu_large: 1}}
+          edge: {count: 3, hw: {cpu: 13, gpu_small: 3}}
+          base: {count: 8, hw: {cpu: 16}}
+  # CONTROLLED-GEOGRAPHY variant (2026-09-01): identical hardware
+  # distribution in both shells (Star profile mirrored into Delta), so the
+  # latitude sweep isolates orbital geometry from fleet composition.
+  mvp-main-symmetric:
+    shells:
+      - id: star_1
+        type: walker_star
+        revs_per_sidereal_day: 15   # exact repeat track (561.383 km)
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 2, hw: {cpu: 10, gpu_small: 4, gpu_large: 2}}
+          edge: {count: 3, hw: {cpu: 12, gpu_small: 4}}
+          base: {count: 7, hw: {cpu: 16}}
+      - id: delta_1
+        type: walker_delta
+        revs_per_sidereal_day: 14   # exact repeat track (887.686 km)
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 2, hw: {cpu: 10, gpu_small: 4, gpu_large: 2}}
+          edge: {count: 3, hw: {cpu: 12, gpu_small: 4}}
+          base: {count: 7, hw: {cpu: 16}}
+  # Strong-heterogeneity variant for Experiment D: hubs nearly gone.
+  mvp-main-scarce:
+    shells:
+      - id: star_1
+        type: walker_star
+        revs_per_sidereal_day: 15   # exact repeat track (561.383 km)
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          hub:  {count: 1, hw: {cpu: 12, gpu_small: 2, gpu_large: 2}}
+          edge: {count: 2, hw: {cpu: 14, gpu_small: 2}}
+          base: {count: 9, hw: {cpu: 16}}
+      - id: delta_1
+        type: walker_delta
+        revs_per_sidereal_day: 14   # exact repeat track (887.686 km)
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        plane_profiles:
+          edge: {count: 2, hw: {cpu: 14, gpu_small: 2}}
+          base: {count: 10, hw: {cpu: 16}}
+  # Totals-MATCHED uniform control (2026-09-02): same total hardware as
+  # mvp-main (5 gpu_large, 32 gpu_small across 384 sats) spread uniformly,
+  # isolating spatial fragmentation from total capacity.
+  mvp-main-uniform-matched:
+    shells:
+      - id: star_1
+        type: walker_star
+        revs_per_sidereal_day: 15   # exact repeat track (561.383 km)
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        hw_fractions: {cpu: 0.9036, gpu_small: 0.0833, gpu_large: 0.0131}
+      - id: delta_1
+        type: walker_delta
+        revs_per_sidereal_day: 14   # exact repeat track (887.686 km)
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        hw_fractions: {cpu: 0.9036, gpu_small: 0.0833, gpu_large: 0.0131}
+  mvp-main-uniform:
+    shells:
+      - id: star_1
+        type: walker_star
+        revs_per_sidereal_day: 15   # exact repeat track (561.383 km)
+        inclination_deg: 87.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        hw_fractions: {cpu: 0.70, gpu_small: 0.20, gpu_large: 0.10}
+      - id: delta_1
+        type: walker_delta
+        revs_per_sidereal_day: 14   # exact repeat track (887.686 km)
+        inclination_deg: 53.0
+        planes: 12
+        sats_per_plane: 16
+        phasing_f: 1
+        hw_fractions: {cpu: 0.70, gpu_small: 0.25, gpu_large: 0.05}
+
+# ISL rate and physics come from constants/constants.yaml. Minimum elevation
+# for AoI visibility (deg), spec-typical for optical/sensing access:
+min_elevation_deg: 25.0

@@ -1,0 +1,10 @@
+# P0 sanity gate (pivot master setup): the go/no-go before any sweep.
+# Expected: tight SLO -> expensive nearby GPU planes; loose SLO -> cheap
+# distant CPU capacity; cost monotone non-increasing in the SLO.
+seed: 0
+provider: mvp-gate
+aoi: {name: main, lat: 48.2082, lon: 16.3738}
+slos_ms: [150, 250, 500, 1000]
+# The gate scans for the first epoch with AoI visibility (small shells do
+# not cover Vienna at every t).
+epoch_scan: {start_s: 0, stop_s: 7200, step_s: 60}

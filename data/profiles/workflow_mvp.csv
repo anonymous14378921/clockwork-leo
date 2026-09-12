@@ -1,0 +1,9 @@
+component,hardware,latency_ms,prov,source
+detector,cpu,90.1,measured,ours-k6-ai2-ryzen9-7950x-8thr-yolov8m-fp32-wall-20260903
+detector,gpu_small,96.6,measured,ours-k6-orin-nano-super-yolov8m-fp16-wall-20260903
+detector,gpu_large,9.0,measured,ours-k6-rtx4090-yolov8m-fp16-wall-20260903
+classifier,cpu,18.7,measured,ours-k6-ai2-ryzen9-7950x-8thr-resnet50-fp32-wall-20260903
+classifier,gpu_small,24.6,measured,ours-k6-orin-nano-super-resnet50-fp16-wall-20260903
+classifier,gpu_large,2.1,measured,ours-k6-rtx4090-resnet50-fp16-wall-20260903
+llm,gpu_small,900.0,derived,ours-k6-orin-nano-super-ollama-qwen2.5-0.5b-fp16-25tok-715ms-normalized-32tok-20260903
+llm,gpu_large,117.0,measured,ours-k6-rtx4090-ollama-0.5.13-qwen2.5-0.5b-fp16-32tok-20260903

@@ -1,0 +1,39 @@
+# maritime.yaml — secondary compound-AI workflow (v2, cascade reframe 2026-08-25).
+#
+# Maritime domain awareness. Role in the paper: the coverage cap (Arctic AoIs sit
+# above Delta inclination, so a Delta constellation cannot serve them at all) and
+# mixed DAGs (AIS correlation is a non-ML component). The detection cascade
+# shares wildfire's measured configuration grid, disclosed as a COCO proxy for
+# SAR imagery; maritime's accuracy numbers are secondary to its coverage story.
+# classify is a fixed single model (demoted from laddered, 2026-08-25).
+#
+# Field semantics match wildfire.yaml.
+name: maritime
+provenance: estimate
+accuracy: measured-cascade       # shared grid with wildfire, disclosed proxy
+cascade:
+  detect_stage: sar_detect
+  verify_stage: verify
+  detectors: [YOLOv8n, YOLOv8s, YOLOv8m]
+  verifiers: [YOLOv8m, YOLOv8l, YOLOv8x, none]
+  thresholds: [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
+  ladder: yolo_coco
+slo_slack_factor: 3.0
+components:
+  - {id: ingest,     kind: io,    out_bytes: 200.0e6, note: "SAR scene, ~200 MB"}
+  - {id: sar_detect, kind: ml,    role: cascade-detector, crops_per_tile: 400, out_bytes: 8.0e6,
+     note: "light SAR ship detector; crop pool available to the verifier"}
+  - {id: verify,     kind: ml,    role: cascade-verifier, out_bytes: 5.0e5,
+     note: "heavy verifier, forward fraction phi of crops; none contracts away"}
+  - {id: classify,   kind: fixed, flops: 50.0e9, out_bytes: 2.0e6,
+     note: "vessel classification, ONE fixed model, quality not scored (estimate FLOPs)"}
+  - {id: ais_corr,   kind: fixed, flops: 1.0e9, out_bytes: 5.0e5,
+     note: "AIS correlation, NON-ML component; demonstrates mixed DAGs"}
+  - {id: dark_alert, kind: io,    out_bytes: 10.0e3,
+     note: "dark-vessel alerting, ~10 KB"}
+edges:
+  - [ingest, sar_detect]
+  - [sar_detect, verify]
+  - [verify, classify]
+  - [classify, ais_corr]
+  - [ais_corr, dark_alert]

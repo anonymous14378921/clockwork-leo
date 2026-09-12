@@ -1,0 +1,11 @@
+# Experiment A (H1): the cost-SLO frontier. ACE vs the single-plane
+# baselines and GreedyCompose on the main provider, one factor varied (the
+# SLO). Epochs: evenly spaced over the cycle, fixed before any outcome.
+seed: 0
+provider: mvp-main
+aoi: {name: main, lat: 48.2082, lon: 16.3738}
+slos_ms: [150, 200, 300, 500, 1000, 1500, 2000]
+fleet_seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+n_epochs: 8
+milp_check: {epoch_indices: [0, 4], seeds: [0, 1, 2]}  # spot-check subset
+workers: 10   # (epoch, seed) instances in parallel; per-instance timings are single-threaded

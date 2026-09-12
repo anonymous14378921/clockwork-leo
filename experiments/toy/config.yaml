@@ -1,0 +1,8 @@
+# Toy experiment config. One config.yaml per experiment, copied into every
+# results/<ts>/ run as provenance.
+seed: 0
+n_steps: 16
+noise: 0.03
+series:        # label -> time constant (tau); smaller tau converges faster
+  fast: 3.0
+  slow: 7.0
