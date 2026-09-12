@@ -1,4 +1,4 @@
-"""E0 worked-example model: the go/no-go for the whole paper (brief Section 7).
+"""Worked-example model for the accuracy-placement hypothesis.
 
 One wildfire instance on ref-star, sparse-strong fleet (2% H100, rest iX10). Two
 placements meet the same SLO:
@@ -6,17 +6,13 @@ placements meet the same SLO:
   B  detour: the detect component is sent k hops to the nearest H100, rest as A.
 
 For each placement we pick the largest detect variant whose end-to-end latency
-fits the SLO, and compare achieved accuracy. The claim under test (HC2): at equal
-SLO, achievable accuracy is placement-dependent. PASS if the gap is at least
-several mAP without contrived numbers.
+fits the SLO, and compare achieved accuracy. At equal SLO, achievable accuracy
+is placement-dependent.
 
 Latency of a component chain = sum of stage compute + routing propagation +
-transmission. Detect compute and delivered accuracy come from lab.profiles
-(decision 2026-08-25): published per-device measurements (Hailo Model Zoo for the
-iX10's Hailo-8, Ultralytics A100 numbers as a conservative H100 stand-in), with
-the analytic roofline only as the fallback for unprofiled devices. The tiny fixed
-components (screen, spread) use the roofline, where they are negligible either
-way. Accuracy is device-aware: the Hailo-8 delivers its quantized mAP.
+transmission. Detect compute and delivered accuracy come from lab.profiles:
+published per-device measurements, with the analytic roofline only as the
+fallback for unprofiled devices. Accuracy is device-aware.
 
 CPU only, pure arithmetic. k (the detour hop count) is measured from the substrate
 by the experiment and passed in, so this module has no geometry dependency.
@@ -150,7 +146,7 @@ def choose_variant(cfg: E0Config, placement: str, k: int, t_hop_ms: float,
 
 
 # --- the verdict -------------------------------------------------------------
-SEVERAL_MAP = 3.0  # "several mAP points" threshold for PASS (brief Section 7)
+SEVERAL_MAP = 3.0  # "several mAP points" threshold for PASS
 
 
 @dataclass

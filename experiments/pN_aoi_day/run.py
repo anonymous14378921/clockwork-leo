@@ -12,7 +12,7 @@ from lab import constants as C
 from lab.cycle import cycle_s, grid
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_label import solve_label
+from lab.castor import solve_label
 
 
 def runs(times, member):

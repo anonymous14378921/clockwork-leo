@@ -1,48 +1,38 @@
-"""Clockwork calendar planner: periodic provisioning over one orbital cycle.
+"""Pollux: cyclic schedule construction over one orbital cycle.
 
 The plan object is a CALENDAR: a sequence of segments over one cycle (a
 sidereal day), each holding a provisioning STATE, and repeating every
 cycle. A state is a compute placement (component -> satellite, hardware
-implied) plus the reserved plane set (the planes of the placement and
-the ingress plane). Inside a segment the ingress satellite is the best
-AoI-visible member of the reserved planes at each instant (the free
-handover of the two-tier maintenance model); a segment boundary is a
-REPROVISION, which changes the compute placement or grows the plane set
-(shrinking is a release and is free).
+implied) plus the reserved plane set. Inside a segment the ingress
+satellite is the best AoI-visible member of the reserved planes at each
+instant (free handover); a segment boundary is a REPROVISION, which
+changes the compute placement or grows the plane set (shrinking is free).
 
-Objective over the cycle: integrated reservation cost (each state's rate
-in cost units per hour, charged for as long as it is reserved) plus a
-switching cost per reprovision, subject to per-request SLO feasibility at
-every instant. Solved exactly over a candidate state pool by a time-axis
-dynamic program (states x instants), with the running-minimum trick for
-switches, run around the cycle twice so the calendar wraps. Candidates
-come from the per-instant label search (every nondominated final plan
-within a cost slack of the instant's optimum, `solve_label(keep_all)`),
-so a slightly dearer plan that lasts longer is available to the DP.
+Objective: integrated reservation cost plus a switching cost per
+reprovision, subject to per-request SLO feasibility at every instant.
+Solved exactly over a candidate state pool by a time-axis dynamic program
+(states x instants), with the running-minimum trick for switches, run
+around the cycle twice so the calendar wraps. Candidates come from
+Castor's per-instant label search (every nondominated final plan within
+a cost slack of the instant's optimum), so a slightly dearer plan that
+lasts longer is available to the DP.
 
-Instants at which no state can serve are UNSERVICEABLE intervals (not
-necessarily coverage gaps: satellites may be visible while no placement
-meets the SLO); there a state may be held (paid, unserved) or released
-(free), and re-entry is a reprovision, on the calendar and on the reactive
-baselines alike. Ingress and egress are symmetric: both are visible
-satellites of the reserved planes and both hand over freely.
+Unserviceable intervals (no state can serve) allow a state to be held
+(paid, unserved) or released (free); re-entry is a reprovision.
 
-Approximations, stated: (1) time is discretized to N instants; (2) the
-state pool is finite, controlled by the cost slack; (3) the cyclic wrap
-is handled by two passes, provably within two switching costs of the
-cyclic optimum over the pool, with the linear optimum reported as a lower
-bound (exact_cycle=True solves the wrap exactly for small pools). Within
-the pool and the grid the DP is exact; tests/test_calendar.py checks it
-against exhaustive enumeration and checks that at switching cost zero the
-calendar equals always-fresh.
+Approximations: (1) time is discretized to N instants; (2) the state
+pool is finite, controlled by the cost slack; (3) the cyclic wrap is
+handled by two passes, provably within two switching costs of the cyclic
+optimum, with the linear optimum as a lower bound (exact_cycle=True
+solves the wrap exactly for small pools).
 """
 
 from dataclasses import dataclass
 from typing import Callable, Dict, FrozenSet, List, Optional, Tuple
 
 from lab.provider import INF_MS, PlaneId, ProviderInstance, SatId
-from lab.provision_label import solve_label
-from lab.provision_milp import AOI, EGRESS, ProvisionPlan, evaluate, load_io
+from lab.castor import solve_label
+from lab.service import AOI, EGRESS, ProvisionPlan, evaluate, load_io
 
 Build = Callable[[float], ProviderInstance]     # t -> instance
 

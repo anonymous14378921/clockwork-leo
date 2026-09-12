@@ -1,10 +1,9 @@
 """Variant ladders with per-device latency and accuracy profiles.
 
-Decision 2026-08-25: latency profiles are first-class input data, exactly
-symmetric with accuracy profiles. Where a published measurement exists for a
-(variant, device) pair the evaluator uses it; the analytic roofline is only the
-fallback for devices without measurements (space-grade CPUs, and Orin until the
-k6 measurement lands). Every lookup reports its source so results can disclose
+Latency profiles are first-class input data, exactly symmetric with accuracy
+profiles. Where a published measurement exists for a (variant, device) pair
+the evaluator uses it; the analytic roofline is the fallback for devices
+without measurements. Every lookup reports its source so results can disclose
 which numbers are measured and which are modeled.
 
 Accuracy is device-aware: an INT8 accelerator delivers its quantized mAP

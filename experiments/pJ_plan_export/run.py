@@ -1,16 +1,16 @@
 """Experiment J: example plan export and the multi-plane diagnosis.
 
 Part 1: for each SLO on the example instance (the first cycle epoch at
-which ACE is feasible at the tightest SLO, a rule fixed before looking at
-outcomes), export the ACE plan in full (ingress, compute planes, stage
+which Castor is feasible at the tightest SLO, a rule fixed before looking at
+outcomes), export the Castor plan in full (ingress, compute planes, stage
 placements, inter-satellite and inter-plane edges, the return leg, latency
 decomposition, cost decomposition).
 
 Part 2: for the tight SLO across all seeds and epochs, explain every
-multi-plane ACE plan by checking each visible plane in isolation with an
+multi-plane Castor plan by checking each visible plane in isolation with an
 exact minimum-latency dynamic program: no single visible plane can host
 the chain at all (hardware absence), one can but not within the SLO
-(latency), or one could and ACE composed planes because it was cheaper
+(latency), or one could and Castor composed planes because it was cheaper
 (single_plane_feasible). Run via `just run pJ_plan_export`.
 """
 
@@ -20,8 +20,8 @@ from lab import constants as C
 from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import INF_MS, build_provider
-from lab.provision_label import solve_label
-from lab.provision_milp import (AOI, EGRESS, SAT_CAPACITY, _trans_ms, edge_ms,
+from lab.castor import solve_label
+from lab.service import (AOI, EGRESS, SAT_CAPACITY, _trans_ms, edge_ms,
                                 egress_access_ms, ingress_ms, load_chain,
                                 load_demands, load_io, load_profiles)
 

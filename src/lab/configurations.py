@@ -1,13 +1,11 @@
 """Cascade configuration space: accuracy and forward fractions per configuration.
 
-A configuration is Compass's house object c = (detector, verifier, threshold)
-for the detection cascade (NMS pinned; Compass VI.B showed it second-order).
-Workflow accuracy is the MEASURED end-to-end mAP of the cascade under c,
-following the Compass evaluation protocol.
+A configuration is c = (detector, verifier, threshold) for the detection
+cascade. Workflow accuracy is the MEASURED end-to-end mAP of the cascade
+under c.
 
 Data source resolution, in order:
-  1. ladders/cascade_grid_measured.yaml, if present: the measured grid (Compass
-     artifact export, or our own rerun of the open-source pipeline). Entries
+  1. ladders/cascade_grid_measured.yaml, if present: the measured grid. Entries
      keyed "<detector>|<verifier>|<threshold>", each {accuracy, forward_fraction}.
      Source reported as MEASURED_GRID.
   2. Otherwise a PLACEHOLDER analytic grid derived from the single-model ladder

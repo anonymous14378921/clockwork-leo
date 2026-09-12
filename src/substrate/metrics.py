@@ -1,4 +1,4 @@
-"""Substrate graph metrics for E1 (and reused by E2/E3).
+"""Substrate graph metrics.
 
 Path-cost distributions, the seam/wrap-pair hop distribution (the seam tax),
 coverage by latitude band across snapshots (the latitude cap), and the

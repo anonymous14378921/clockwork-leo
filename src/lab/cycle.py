@@ -1,11 +1,8 @@
 """The planning cycle: one sidereal day, and epoch grids over it.
 
-Evaluation shells sit at repeat-ground-track altitudes, so the AoI-relative
-geometry repeats exactly every cycle (Clockwork decision, 2026-09-01).
-Experiments sample the cycle on an evenly spaced grid chosen BEFORE any
-outcome is seen (no favorable-epoch sampling): `n_epochs: 8` in a config
-yields epochs k * cycle / 8. A literal `epochs_s` list is still honored for
-fixtures that need a specific instant.
+Shells sit at repeat-ground-track altitudes, so the AoI-relative geometry
+repeats exactly every cycle. Experiments sample the cycle on an evenly
+spaced grid chosen before any outcome is seen.
 """
 
 from typing import List

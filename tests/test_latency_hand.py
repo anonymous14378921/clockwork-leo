@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 
 from lab.provider import build_provider
-from lab.provision_milp import (AOI, EGRESS, evaluate, load_chain,
+from lab.service import (AOI, EGRESS, evaluate, load_chain,
                                 load_demands, load_io, load_profiles)
 from substrate import visibility as VIS
 

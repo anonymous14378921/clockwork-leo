@@ -1,14 +1,13 @@
-"""Baseline planners (EQ3). All consume the SAME enumeration records that feed
+"""Baseline planners. All consume the SAME enumeration records that feed
 the oracle, so every method is judged by the identical evaluator arithmetic
 (lab.placement) and differs only in its selection rule:
 
-- latency_first (HyperDrive-like): SLO- and budget-aware but accuracy-blind;
-  among feasible plans, minimize end-to-end latency. Qualitative
-  reimplementation of the latency-first policy family; adaptation disclosed.
+- latency_first: SLO- and budget-aware but accuracy-blind; among feasible
+  plans, minimize end-to-end latency.
 - atlas_like (topology-blind): the strongest accuracy-aware baseline we can
   construct. Picks the accuracy-optimal (configuration, placement) believing
-  in a seamless zero-propagation substrate (the Atlas/Compass world), then is
-  evaluated on the real constellation, where it may lose feasibility.
+  in a seamless zero-propagation substrate, then is evaluated on the real
+  constellation, where it may lose feasibility.
 - random_feasible: seeded uniform draw among feasible plans; the sanity floor.
 - accuracy_greedy: maximum-accuracy plan ignoring SLO and budget entirely;
   shows what accuracy-blindness in the OTHER direction costs (infeasibility).

@@ -7,7 +7,7 @@ or bare scalars. Use :func:`val` to read a number regardless of which form it is
 PyYAML parses a float only when the token carries a decimal point or a signed
 exponent, so a stray ``1e14`` would load as a string. :func:`load_constants`
 coerces any sci-notation string back to float defensively, so the source stays
-robust to that quirk (brief Section 8).
+robust to that quirk.
 """
 
 import re

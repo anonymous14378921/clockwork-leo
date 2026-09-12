@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from typing import Mapping, Sequence
 
 from lab.provider import INF_MS, ProviderInstance, SatId
-from lab.provision_milp import (
+from lab.service import (
     AOI, EGRESS, SAT_CAPACITY, Assignment, ProvisionPlan, candidate_sats,
     evaluate, load_chain, load_demands, load_io, load_profiles,
 )

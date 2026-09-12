@@ -1,4 +1,4 @@
-"""E0 worked example: the go/no-go for the whole paper. Run via `just run e0_worked_example`.
+"""Worked example: accuracy is placement-dependent. Run via `just run e0_worked_example`.
 
 Measures the detour hop count k from the substrate (sparse-strong fleet: 2% of
 ref-star nodes are H100, seeded), then evaluates the two placements with lab.e0

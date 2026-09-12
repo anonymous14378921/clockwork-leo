@@ -1,14 +1,13 @@
-"""Pivot MVP sanity: visibility geometry and the provisioning MILP gate.
+"""Provisioning sanity: visibility geometry and the provisioning gate.
 
-The gate assertions mirror the master setup's go/no-go: cost is monotone
-non-increasing in the SLO, tight SLOs buy GPU hardware, and the incompatible
-(llm, cpu) pair never appears.
+Cost is monotone non-increasing in the SLO, tight SLOs buy GPU hardware,
+and the incompatible (llm, cpu) pair never appears.
 """
 
 import math
 
 from lab.provider import build_provider
-from lab.provision_milp import solve
+from lab.castor import solve_label as solve
 from substrate import visibility as VIS
 from substrate.walker import Walker
 
@@ -38,7 +37,7 @@ def test_gate_monotone_and_compatible():
         costs.append(plan.cost)
     assert costs[0] >= costs[1] >= costs[2]   # relaxing SLO never costs more
     # Tight SLO must run the llm on the large accelerator (900 ms on the
-    # small one, measured 2026-09-03); loose may use the small one.
+    # small one); loose may use the small one.
     tight = solve(inst, 250.0)
     hw = {a.component: a.hardware for a in tight.assignments if a.hardware}
     assert hw["llm"] == "gpu_large"

@@ -1,8 +1,8 @@
 """Experiment H: execution-profile perturbation sensitivity.
 
 Draw seeded multiplicative noise on every (component, hardware) execution
-latency and re-run ACE and the strongest baselines with the perturbed
-profiles. Reported per draw: feasibility, cost, and whether ACE stays at
+latency and re-run Castor and the strongest baselines with the perturbed
+profiles. Reported per draw: feasibility, cost, and whether Castor stays at
 most as expensive as GreedyCompose. Run via `just run pH_profile_sensitivity`.
 """
 
@@ -15,8 +15,8 @@ from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import build_provider
 from lab.provision_baselines import POLICIES
-from lab.provision_label import solve_label
-from lab.provision_milp import load_profiles
+from lab.castor import solve_label
+from lab.service import load_profiles
 
 
 def perturbed(base, eps: float, draw: int):
@@ -41,9 +41,9 @@ def main() -> None:
                 prof = perturbed(base, eps, draw)
                 for slo in cfg["slos_ms"]:
                     slo_ms = C.to_float(slo)
-                    plans = {"ace": solve_label(inst, slo_ms, profiles=prof)}
+                    plans = {"castor": solve_label(inst, slo_ms, profiles=prof)}
                     for name in cfg["methods"]:
-                        if name != "ace":
+                        if name != "castor":
                             plans[name] = POLICIES[name](inst, slo_ms,
                                                          profiles=prof)
                     for method, plan in plans.items():
@@ -60,15 +60,15 @@ def main() -> None:
     df = pd.DataFrame(rows)
     run.save_dataframe("sensitivity.csv", df)
 
-    # Claim survival per draw: ACE feasibility, and ace <= greedy_compose
+    # Claim survival per draw: Castor feasibility, and castor <= greedy_compose
     # cost wherever both are feasible.
     wide = df.pivot_table(index=["draw", "epoch_s", "seed", "slo_ms"],
                           columns="method", values="cost")
-    both = wide.dropna(subset=["ace", "greedy_compose"])
-    viol = int((both["ace"] > both["greedy_compose"] + 1e-9).sum())
-    ace = df[df.method == "ace"]
-    print(f"[pH] draws: {cfg['n_draws']} | ace feasibility "
-          f"{ace.feasible.mean():.3f} | ace<=greedy in "
+    both = wide.dropna(subset=["castor", "greedy_compose"])
+    viol = int((both["castor"] > both["greedy_compose"] + 1e-9).sum())
+    castor = df[df.method == "castor"]
+    print(f"[pH] draws: {cfg['n_draws']} | castor feasibility "
+          f"{castor.feasible.mean():.3f} | castor<=greedy in "
           f"{len(both) - viol}/{len(both)} matched cases")
 
 

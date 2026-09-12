@@ -1,7 +1,7 @@
 """The general plan evaluator: score one (configuration, placement) pair.
 
 The atom of the evaluation. Every downstream module (baselines, exhaustive
-enumeration, MILP cross-check, heuristic) calls evaluate_plan() so that all
+enumeration, heuristic) calls evaluate_plan() so that all
 algorithms are judged by the identical arithmetic. A plan is a cascade
 configuration c = (detector, verifier, threshold) plus an assignment of every
 workflow component to a substrate node.

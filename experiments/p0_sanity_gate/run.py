@@ -1,4 +1,4 @@
-"""P0 sanity gate for the pivoted min-cost provisioning MVP.
+"""P0 sanity gate for the provisioning model.
 
 Solves the tiny instance at several SLOs and prints cost, latency
 decomposition, and selections. GATE: cost must be monotone non-increasing in
@@ -11,7 +11,7 @@ import pandas as pd
 from lab import constants as C
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_milp import solve
+from lab.castor import solve_label as solve
 
 
 def find_epoch(cfg) -> float:

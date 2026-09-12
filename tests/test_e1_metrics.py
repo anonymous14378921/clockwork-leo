@@ -1,6 +1,6 @@
 """E1 metric sanity tests: the seam tax and the latitude cap must show up.
 
-These lock the two structural signatures the HA2 go/no-go rests on, on the
+These lock the two structural signatures on the
 controlled pair (identical except RAAN span).
 """
 

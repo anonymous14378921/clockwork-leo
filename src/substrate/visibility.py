@@ -1,4 +1,4 @@
-"""Point-AoI visibility: elevation, slant range, access latency (MVP pivot).
+"""Point-AoI visibility: elevation, slant range, access latency.
 
 The AoI is an Earth-fixed point (lat, lon). A satellite is visible when its
 elevation above the point's local horizon meets a minimum elevation angle.

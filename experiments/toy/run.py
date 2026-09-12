@@ -2,7 +2,7 @@
 
 The whole loop in one file: start a run (provenance captured automatically),
 run the system under test, write raw data into the run dir. Run it with
-`just run toy` — never `python experiments/toy/run.py` directly (see CLAUDE.md).
+`just run toy` — never `python experiments/toy/run.py` directly .
 """
 
 import pandas as pd

@@ -1,8 +1,8 @@
 """Experiment F (VI-G): cost-vector sensitivity.
 
 The qualitative claims under test: (1) at the tight SLO, composition stays
-necessary (ACE feasible where single-plane is not) regardless of prices;
-(2) cost ordering ACE <= greedy_compose <= cheapest_single holds; (3) the
+necessary (Castor feasible where single-plane is not) regardless of prices;
+(2) cost ordering Castor <= greedy_compose <= cheapest_single holds; (3) the
 frontier stays monotone in the SLO. Prices are overridden on the built
 instance, so geometry and profiles are identical across regimes.
 Run via `just run pF_cost_sensitivity`.
@@ -15,7 +15,7 @@ from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import build_provider
 from lab.provision_baselines import cheapest_single, greedy_compose
-from lab.provision_label import solve_label
+from lab.castor import solve_label
 
 
 def main() -> None:
@@ -34,7 +34,7 @@ def main() -> None:
                     inst.plane_cost = C.to_float(pc)
                     for slo in cfg["slos_ms"]:
                         slo_ms = C.to_float(slo)
-                        plans = {"ace": solve_label(inst, slo_ms),
+                        plans = {"castor": solve_label(inst, slo_ms),
                                  "cheapest_single": cheapest_single(inst, slo_ms),
                                  "greedy_compose": greedy_compose(inst, slo_ms)}
                         for m, p in plans.items():

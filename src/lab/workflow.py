@@ -1,7 +1,7 @@
 """Load compound-AI workflow DAG specs from workflows/*.yaml.
 
 A workflow is a DAG of components (io / fixed / ml) with one embedded detection
-cascade (Compass-style): a cascade-detector stage and a cascade-verifier stage
+cascade: a cascade-detector stage and a cascade-verifier stage
 whose configuration space lives in lab.configurations. verifier=none contracts
 the verify stage out of the DAG (its edges are rerouted around it), so the
 single-detector workflow is the degenerate special case.

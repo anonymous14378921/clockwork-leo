@@ -1,4 +1,4 @@
-"""Substrate sanity tests (brief item 4). Test-first: these are the spec.
+"""Substrate sanity tests . Test-first: these are the spec.
 
 Two families of checks:
   1. Geometry: the walker must reproduce the four hand-verified intra-plane hop
@@ -19,7 +19,7 @@ from lab import constants as C
 from substrate import graph as G
 from substrate.walker import Walker
 
-TOL = 0.01  # 1 percent, per brief item 4
+TOL = 0.01  # 1 percent, per spec
 ALL = ["ref-star", "starlink-s1", "kuiper-s1", "oneweb"]
 
 

@@ -1,9 +1,7 @@
-"""substrate — the Walker-topology substrate compiler for Ace.
+"""Orbital substrate compiler.
 
-Importable across experiments (not experiment-local): it turns constellation
-parameters into satellite positions, a hardware-annotated ISL graph, and AoI
-slices. Placed under src/ so the template's package discovery exports it as the
-top-level import ``substrate`` on the editable install.
+Turns constellation parameters into satellite positions, a hardware-annotated
+ISL graph, and AoI slices.
 
     from substrate.walker import Walker
     from substrate import graph, slices

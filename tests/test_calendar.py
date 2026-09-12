@@ -15,10 +15,10 @@ import random
 
 import pytest
 
-from lab import calendar as CAL
+from lab import pollux as CAL
 from lab.cycle import cycle_s
 from lab.provider import build_provider
-from lab.provision_milp import (AOI, evaluate, load_chain, load_io,
+from lab.service import (AOI, evaluate, load_chain, load_io,
                                 load_profiles)
 
 VIENNA = (48.2082, 16.3738)

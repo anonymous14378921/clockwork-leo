@@ -1,5 +1,5 @@
 """Substrate dynamics: Earth rotation, slice membership over time, validity
-windows (contribution C1's temporal semantics; experiment E4).
+windows.
 
 substrate.walker deliberately computes static-snapshot subpoints (no Earth
 rotation). This module owns the time axis: the AoI is fixed to the rotating

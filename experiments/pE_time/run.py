@@ -20,8 +20,8 @@ from lab import constants as C
 from lab.cycle import cycle_s, grid
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_label import solve_label as solve
-from lab.provision_milp import (AOI, EGRESS, evaluate, load_chain,
+from lab.castor import solve_label as solve
+from lab.service import (AOI, EGRESS, evaluate, load_chain,
                                 load_profiles)
 
 IO = (AOI, EGRESS)      # virtual nodes: no compute, free handover

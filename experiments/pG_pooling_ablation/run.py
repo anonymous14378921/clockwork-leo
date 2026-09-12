@@ -1,6 +1,6 @@
 """Experiment G: is satellite-level modeling necessary? (ablation)
 
-For each satellite-level ACE plan, compute the plane-pooled abstraction's
+For each satellite-level Castor plan, compute the plane-pooled abstraction's
 latency prediction for the SAME logical plan (components mapped to their
 planes, anchor-based plane-pair routes, one intra-plane hop between
 co-plane components, best-visible access for the ingress plane) and compare
@@ -15,8 +15,8 @@ from lab import constants as C
 from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_label import solve_label
-from lab.provision_milp import (AOI, EGRESS, _trans_ms, load_chain, load_io,
+from lab.castor import solve_label
+from lab.service import (AOI, EGRESS, _trans_ms, load_chain, load_io,
                                 load_profiles)
 
 

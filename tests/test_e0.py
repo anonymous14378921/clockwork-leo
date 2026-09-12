@@ -1,7 +1,7 @@
 """E0 model sanity tests. Lock the latency arithmetic and the placement logic.
 
 These do not touch geometry (k is passed in), so they are fast and deterministic.
-Since 2026-08-25 detect latency comes from measured per-device profiles
+Detect latency comes from measured per-device profiles
 (lab.profiles); the roofline test below now exercises the fallback path.
 """
 

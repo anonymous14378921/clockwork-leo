@@ -14,8 +14,8 @@ policy preserves upstream network scoring. These three permit multiple planes.
 from typing import Optional
 
 from lab.provider import PlaneId, ProviderInstance
-from lab.provision_label import solve_label as solve
-from lab.provision_milp import ProvisionPlan
+from lab.castor import solve_label as solve
+from lab.service import ProvisionPlan
 from lab.hyperdrive import solve_hyperdrive
 
 
@@ -62,10 +62,10 @@ def greedy_compose(inst: ProviderInstance, slo_ms: float,
     cheapest reachable compatible satellite that keeps the SLO reachable
     (min-remaining-execution lookahead), activating planes as needed. Can
     compose planes but does not optimize globally."""
-    from lab.provision_milp import (AOI, EGRESS, SAT_CAPACITY, candidate_sats,
-                                    edge_ms, egress_access_ms, evaluate,
-                                    ingress_ms, load_chain, load_demands,
-                                    load_io, load_profiles)
+    from lab.service import (AOI, EGRESS, SAT_CAPACITY, candidate_sats,
+                         edge_ms, egress_access_ms, evaluate,
+                         ingress_ms, load_chain, load_demands,
+                         load_io, load_profiles)
     comps, edges = load_chain(kw.get("workflow", "mvp_fixed"))
     profiles = kw.get("profiles") or load_profiles(
         kw.get("profile_name", "workflow_mvp"))
@@ -139,7 +139,7 @@ def greedy_compose(inst: ProviderInstance, slo_ms: float,
         cost, l2, comp_ms, net_ms, acc_ms = evaluate(inst, comps, edges,
                                                      profiles, placement, io)
         if l2 <= slo_ms and (best_plan is None or cost < best_plan.cost):
-            from lab.provision_milp import Assignment
+            from lab.service import Assignment
             best_plan = ProvisionPlan(
                 assignments=[Assignment(v, placement[v][0], placement[v][1],
                                         profiles.get((v, placement[v][1]),
@@ -158,7 +158,7 @@ def latency_first(inst: ProviderInstance, slo_ms: float,
     """Latency-first placement (an exact latency objective ablation):
     minimize end-to-end latency, cost-blind, free to compose planes. The
     same exact search with the latency objective, so it is feasible
-    exactly when ACE is; it shows what ignoring cost costs."""
+    exactly when Castor is; it shows what ignoring cost costs."""
     return solve(inst, slo_ms, objective="latency", **kw)
 
 

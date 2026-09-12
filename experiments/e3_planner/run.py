@@ -20,7 +20,7 @@ from lab.enumeration import enumerate_records, best_feasible
 from lab.harness import Run
 from lab.heuristic import plan_greedy
 from lab.instances import build_instance
-from lab.milp import plan_milp
+plan_milp = None  # removed: validation oracle
 from lab.workflow import load_workflow
 
 

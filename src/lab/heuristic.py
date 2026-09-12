@@ -1,4 +1,4 @@
-"""The greedy carrier-upgrade heuristic (algorithm Step 4a-4c, contribution C3).
+"""Greedy carrier-upgrade heuristic.
 
 Multi-start greedy: anchor the cheapest plan (smallest detector, no verifier)
 at every candidate node where it is feasible, climb from each anchor by

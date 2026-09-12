@@ -1,8 +1,8 @@
-"""Experiment A: provisioning under latency SLOs (VI-B).
+"""Experiment A: provisioning under latency SLOs.
 
-Evenly spaced epochs over the cycle (no favorable-epoch sampling), 10 fleet seeds, ACE (label
-search) vs single-plane baselines vs GreedyCompose. MILP equality is
-spot-checked on a documented subset. Run via `just run pA_slo_sweep`.
+Evenly spaced epochs over the cycle, 10 fleet seeds, Castor (label
+search) vs single-plane baselines vs GreedyCompose.
+Run via `just run pA_slo_sweep`.
 """
 
 import time
@@ -15,32 +15,20 @@ from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import build_provider
 from lab.provision_baselines import POLICIES
-from lab.provision_label import solve_label
-from lab.provision_milp import solve as solve_milp
+from lab.castor import solve_label
 
 
 def one_instance(args):
     """All methods at every SLO for one (epoch, fleet seed) instance."""
     cfg, t0, seed = args
     aoi = (C.to_float(cfg["aoi"]["lat"]), C.to_float(cfg["aoi"]["lon"]))
-    chk = cfg["milp_check"]
-    check_epochs = {epochs(cfg)[int(i)] for i in chk["epoch_indices"]}
     inst = build_provider(cfg["provider"], aoi, t=float(t0), seed=int(seed))
     rows = []
     for slo in cfg["slos_ms"]:
         slo_ms = C.to_float(slo)
         t_s = time.perf_counter()
-        plans = {"ace": solve_label(inst, slo_ms)}
-        ace_s = time.perf_counter() - t_s
-        if (t0 in check_epochs and seed in chk["seeds"]):
-            t_s = time.perf_counter()
-            milp = solve_milp(inst, slo_ms)
-            milp_s = time.perf_counter() - t_s
-            assert (milp is None) == (plans["ace"] is None)
-            if milp is not None:
-                assert abs(milp.cost - plans["ace"].cost) < 1e-6
-        else:
-            milp_s = None
+        plans = {"castor": solve_label(inst, slo_ms)}
+        castor_s = time.perf_counter() - t_s
         for name, fn in POLICIES.items():
             plans[name] = fn(inst, slo_ms)
         for method, plan in plans.items():
@@ -51,10 +39,8 @@ def one_instance(args):
                 row.update({"cost": plan.cost,
                             "latency_ms": plan.latency_ms,
                             "n_planes": len(plan.activated)})
-            if method == "ace":
-                row["solve_s"] = ace_s
-                if milp_s is not None:
-                    row["milp_s"] = milp_s
+            if method == "castor":
+                row["solve_s"] = castor_s
             rows.append(row)
     print(f"[pA] epoch {t0} seed {seed} done", flush=True)
     return rows

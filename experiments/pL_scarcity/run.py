@@ -13,7 +13,7 @@ from lab.cycle import epochs
 from lab.harness import Run
 from lab.provider import build_provider
 from lab.provision_baselines import POLICIES
-from lab.provision_label import solve_label
+from lab.castor import solve_label
 
 
 def main() -> None:
@@ -35,7 +35,7 @@ def main() -> None:
                 inst = build_provider(cfg["provider"], aoi, t=float(t0),
                                       seed=int(seed), plane_profiles=profiles)
                 n_gl = sum(h == "gpu_large" for h in inst.sat_hw.values())
-                plans = {"ace": solve_label(inst, slo_ms)}
+                plans = {"castor": solve_label(inst, slo_ms)}
                 for name, fn in POLICIES.items():
                     plans[name] = fn(inst, slo_ms)
                 for method, plan in plans.items():

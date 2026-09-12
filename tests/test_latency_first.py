@@ -1,14 +1,14 @@
 """Latency-first baseline: the exact search with the latency objective.
 
-Feasible exactly when ACE is (same candidates, same SLO), never slower
-than ACE's plan, never cheaper than ACE's plan.
+Feasible exactly when Castor is (same candidates, same SLO), never slower
+than Castor's plan, never cheaper than Castor's plan.
 """
 
 import pytest
 
 from lab.provider import build_provider
 from lab.provision_baselines import latency_first
-from lab.provision_label import solve_label
+from lab.castor import solve_label
 
 VIENNA = (48.2082, 16.3738)
 
@@ -16,21 +16,21 @@ VIENNA = (48.2082, 16.3738)
 @pytest.mark.parametrize("provider,t,slo", [
     ("mvp-gate", 4860.0, 250.0), ("mvp-gate", 4860.0, 1000.0),
     ("mvp-main", 1080.0, 300.0), ("mvp-main", 1080.0, 1000.0)])
-def test_latency_first_vs_ace(provider, t, slo):
+def test_latency_first_vs_castor(provider, t, slo):
     inst = build_provider(provider, VIENNA, t=t, seed=0)
-    ace = solve_label(inst, slo)
+    castor = solve_label(inst, slo)
     lf = latency_first(inst, slo)
-    assert (ace is None) == (lf is None)
-    if ace is None:
+    assert (castor is None) == (lf is None)
+    if castor is None:
         return
-    assert lf.latency_ms <= ace.latency_ms + 1e-6
-    assert lf.cost >= ace.cost - 1e-6
+    assert lf.latency_ms <= castor.latency_ms + 1e-6
+    assert lf.cost >= castor.cost - 1e-6
     assert lf.latency_ms <= slo + 1e-6
 
 
 def test_latency_first_is_latency_optimal_on_gate():
     """Brute force over the candidate pool: no plan is faster."""
-    from lab.provision_milp import (AOI, EGRESS, candidate_sats, evaluate,
+    from lab.service import (AOI, EGRESS, candidate_sats, evaluate,
                                     load_chain, load_demands, load_io,
                                     load_profiles)
     import itertools

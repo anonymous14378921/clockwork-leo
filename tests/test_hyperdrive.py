@@ -17,7 +17,7 @@ from lab.hyperdrive import (
     resources_fit, select_vicinity,
 )
 from lab.provider import ProviderInstance
-from lab.provision_milp import load_demands
+from lab.service import load_demands
 
 FIXTURES = Path(__file__).parent / "fixtures" / "hyperdrive_upstream"
 

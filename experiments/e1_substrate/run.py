@@ -1,4 +1,4 @@
-"""E1 substrate characterization: the go/no-go for the topology-class framing (HA2).
+"""Substrate characterization: Star vs Delta topology-class metrics.
 
 For each constellation (controlled pair plus the four real ones) build the ISL
 graph and measure path-cost distribution, seam/wrap-pair hop distance (the seam

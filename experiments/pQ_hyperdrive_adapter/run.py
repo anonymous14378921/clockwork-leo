@@ -10,7 +10,7 @@ from lab.harness import Run
 from lab.hyperdrive import UPSTREAM_COMMIT, plan_hyperdrive
 from lab.provider import build_provider
 from lab.provision_baselines import greedy_compose
-from lab.provision_label import solve_label
+from lab.castor import solve_label
 
 
 def main():

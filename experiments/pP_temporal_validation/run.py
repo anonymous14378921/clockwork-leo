@@ -9,11 +9,11 @@ from pathlib import Path
 
 import pandas as pd
 
-from lab import calendar as cal
+from lab import pollux as cal
 from lab.cycle import cycle_s
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_milp import load_chain, load_io, load_profiles
+from lab.service import load_chain, load_io, load_profiles
 
 
 _CTX = {}

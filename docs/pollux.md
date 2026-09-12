@@ -15,7 +15,7 @@ Key properties:
 
 ## Implementation
 
-The primary implementation is in `src/lab/calendar.py`, which includes:
+The primary implementation is in `src/lab/pollux.py`, which includes:
 - The Pollux DP solver
 - Reactive baselines (event-driven reprovisioning with and without pre-staging)
 - A brute-force oracle for validation on small instances

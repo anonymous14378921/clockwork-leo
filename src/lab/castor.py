@@ -1,7 +1,6 @@
-"""Layered Pareto label search: the primary provisioning algorithm.
+"""Castor: layered Pareto label search for per-snapshot provisioning.
 
-Dynamic programming over the chain workflow's layered placement graph
-(with dominance corrections).
+Dynamic programming over the chain workflow's layered placement graph.
 A label is one nondominated partial plan,
 
     sigma = (stage, current satellite, cost C, latency L,
@@ -17,32 +16,29 @@ with at least one strict inequality. The plane-superset direction is
 required because already-paid activations are future discounts; the
 component-wise usage comparison (not set inclusion) is required because two
 labels can load the same satellite to different depths. Exact for chains
-given these rules; verified against the independent MILP and a brute-force
-oracle in tests (triple check).
+given these rules; verified against a brute-force oracle in tests.
 
-Capacity model (2026-09-01): satellites have normalized capacity
-SAT_CAPACITY, components have fractional demands, colocation is allowed,
-and billing is per USED satellite plus per activated plane, so placing a
-second component on an already-billed satellite adds no hardware cost.
-Service model (Clockwork, 2026-09-01): the workflow's source mode decides
-the ingress term (satellite-captured image or ground uplink), colocated
-consecutive components pay no hop, and the last stage adds the return leg
-to the ground (egress), which depends only on the last satellite and so
-preserves the bucket dominance.
+Satellites have normalized capacity SAT_CAPACITY, components have fractional
+demands, colocation is allowed, and billing is per used satellite plus per
+activated plane. The workflow source mode decides the ingress term
+(satellite-captured image or ground uplink), colocated consecutive
+components pay no hop, and the last stage adds the return leg to the ground
+(egress), which depends only on the last satellite and so preserves the
+bucket dominance.
 
-Every returned plan is re-scored through provision_milp.evaluate with a
-loud assert, the house anti-fabrication pattern.
+Every returned plan is re-scored through the independent evaluator with a
+loud assert (anti-fabrication).
 """
 
 from dataclasses import dataclass
 from typing import Dict, FrozenSet, Iterable, List, Optional, Tuple
 
 from lab.provider import INF_MS, PlaneId, ProviderInstance, SatId
-from lab.provision_milp import (AOI, EGRESS, SAT_CAPACITY, Assignment,
-                                ProvisionPlan, candidate_sats, edge_ms,
-                                egress_access_ms, evaluate, ingress_ms,
-                                load_chain, load_demands, load_io,
-                                load_profiles)
+from lab.service import (AOI, EGRESS, SAT_CAPACITY, Assignment,
+                         ProvisionPlan, candidate_sats, edge_ms,
+                         egress_access_ms, evaluate, ingress_ms,
+                         load_chain, load_demands, load_io,
+                         load_profiles)
 
 EPS = 1e-9
 
@@ -353,7 +349,7 @@ def solve_brute(inst: ProviderInstance, slo_ms: float,
                 io: Optional[dict] = None
                 ) -> Optional[Tuple[float, float]]:
     """Brute-force oracle for tiny instances: (min cost, its latency).
-    Independent of both the MILP and the label search (triple check)."""
+    Independent of the label search (cross-check)."""
     import itertools
     comps, edges = load_chain(workflow)
     profiles = load_profiles(profile_name)

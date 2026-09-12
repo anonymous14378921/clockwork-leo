@@ -12,12 +12,12 @@ from multiprocessing import Pool
 
 import pandas as pd
 
-from lab import calendar as CAL
+from lab import pollux as CAL
 from lab import constants as C
 from lab.cycle import cycle_s, grid
 from lab.harness import Run
 from lab.provider import build_provider
-from lab.provision_milp import load_chain, load_io, load_profiles
+from lab.service import load_chain, load_io, load_profiles
 
 
 def one_cell(args):

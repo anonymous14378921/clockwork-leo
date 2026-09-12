@@ -1,13 +1,12 @@
-"""Provider model for the min-cost provisioning MVP (pivot 2026-08-31).
+"""Provider model for min-cost provisioning.
 
 A provider owns several shells; every satellite carries one hardware class,
 assigned from seeded per-shell fractions; every orbital plane is a
-PROVISIONING DOMAIN (the availability-zone analog of the orbital tier) with
-aggregated per-class capacity and an activation cost. Planes, not individual
-satellites, are what the optimizer activates; satellites inside supply the
-hardware units and the network anchors.
+PROVISIONING DOMAIN with aggregated per-class capacity and an activation
+cost. Planes, not individual satellites, are what the optimizer activates;
+satellites inside supply the hardware units and the network anchors.
 
-Plane-pair latency (agreed correction to the MVP plan): each plane gets an
+Plane-pair latency: each plane gets an
 anchor satellite, the best AoI-visible member where the plane is visible,
 otherwise the member nearest by propagation time to the shell's best visible
 satellite. Pair latency is the shortest-path propagation time between
@@ -85,7 +84,7 @@ class ProviderInstance:
     def sat_dist(self, a: SatId, b: SatId) -> float:
         """Satellite-pair propagation ms on the unified G(t). No special
         cases: cross-shell pairs are reachable exactly when G(t) contains a
-        path (inter-shell edge class empty in the MVP config -> INF)."""
+        path (inter-shell edge class empty in the default config -> INF)."""
         if a == b:
             return 0.0
         if a not in self._sat_dist_cache:
@@ -264,7 +263,7 @@ def build_provider(name: str, aoi: Tuple[float, float], t: float = 0.0,
             net.add_edge((sid, u[0], u[1]), (sid, v[0], v[1]),
                          weight_ms=data["weight_ms"], cls="intra_shell")
     # Optional link classes (inter-shell, ground) from the spec; empty lists
-    # by default, so the MVP substrate has no cross-shell paths.
+    # by default, so the default substrate has no cross-shell paths.
     for extra in spec.get("extra_links", []):
         net.add_edge(tuple(extra["a"]), tuple(extra["b"]),
                      weight_ms=C.to_float(extra["ms"]),

@@ -17,10 +17,10 @@ The search returns one minimum-cost feasible state and, optionally, alternatives
 
 ## Implementation
 
-The primary implementation is in `src/lab/provision_label.py` (layered Pareto label search).
+The primary implementation is in `src/lab/castor.py` (layered Pareto label search).
 
-Additional provisioning implementations:
-- `src/lab/provision_milp.py` — exact MILP formulation (oracle/validation)
+Additional implementations:
+- `src/lab/service.py` — shared types, plan evaluator, instance helpers
 - `src/lab/provision_baselines.py` — baseline policies (single-plane, greedy, latency-first, HyperDrive adapter)
 
 ## Complexity analysis

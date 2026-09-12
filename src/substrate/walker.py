@@ -1,14 +1,11 @@
 """Walker constellation geometry: positions, hop distances, and ISL links.
 
-Two topology classes (brief Section 1):
+Two topology classes:
   star  — RAAN spread over pi (a cylinder with a seam; full latitude coverage).
   delta — RAAN spread over 2 pi (a torus; coverage capped at inclination).
 
-Everything is driven by constants.yaml through lab.constants, so no orbital
-number is hardcoded here. Positions are Earth-centered inertial (ECI) km for a
-circular orbit; a single snapshot (t=0) is enough for the static graph metrics
-E0 and E1 need, and the time argument advances the argument of latitude by the
-mean motion for the time-expanded views E4 will use.
+All constants from constants.yaml; no orbital number is hardcoded. Positions
+are Earth-centered inertial (ECI) km for a circular orbit.
 """
 
 import math

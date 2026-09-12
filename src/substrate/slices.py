@@ -2,9 +2,7 @@
 
 An AoI is a latitude/longitude bounding box. A slice at time t is the set of
 satellites whose sub-satellite point falls inside the box, and the ISL subgraph
-they induce. E1 measures slice richness by region and topology class (brief HA3);
-a Delta constellation cannot cover latitudes above its inclination, which is the
-coverage cap the topology axis turns on.
+they induce. A Delta constellation cannot cover latitudes above its inclination.
 """
 
 from dataclasses import dataclass
