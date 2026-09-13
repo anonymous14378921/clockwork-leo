@@ -61,7 +61,7 @@ Every experiment is invoked through the justfile:
 just run <experiment>     # e.g., just run calendar_scheduling
 ```
 
-Each run writes its configuration, source revision, and hardware manifest into `results/<experiment>/<timestamp>/` for full provenance. See the [Reproducibility](../../wiki/Reproducibility) guide for details.
+Each run writes its configuration, source revision, and hardware manifest into `results/<experiment>/<timestamp>/` for full provenance. See the [Reproducibility](../../wiki/5.-Reproducibility) guide for details.
 
 ## License
 
