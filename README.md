@@ -1,6 +1,6 @@
 # Clockwork
 
-**Scheduling Compound AI Workflows in Space Data Centers**
+**Scheduling Compound AI Systems in Space Data Centers**
 
 > **[Wiki](../../wiki)** — full system model, algorithm complexity analysis, and additional experiments beyond the paper.
 
