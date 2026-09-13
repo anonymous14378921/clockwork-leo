@@ -1,11 +1,11 @@
-# maritime.yaml — secondary compound-AI workflow (v2, cascade reframe 2026-08-25).
+# maritime.yaml — secondary compound-AI workflow.
 #
 # Maritime domain awareness. Role in the paper: the coverage cap (Arctic AoIs sit
 # above Delta inclination, so a Delta constellation cannot serve them at all) and
 # mixed DAGs (AIS correlation is a non-ML component). The detection cascade
 # shares wildfire's measured configuration grid, disclosed as a COCO proxy for
 # SAR imagery; maritime's accuracy numbers are secondary to its coverage story.
-# classify is a fixed single model (demoted from laddered, 2026-08-25).
+# classify is a fixed single model.
 #
 # Field semantics match wildfire.yaml.
 name: maritime

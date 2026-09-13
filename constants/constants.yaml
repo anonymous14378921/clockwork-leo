@@ -1,14 +1,10 @@
-# constants.yaml — the single source of truth for every number in Ace.
-# No number is hardcoded anywhere else (CLAUDE.md / brief Section 8). Load it
-# with lab.constants.load_constants(), which coerces scientific-notation strings
-# to float defensively.
+# constants.yaml — the single source of truth for every number in the codebase.
+# No number is hardcoded anywhere else. Load with lab.constants.load_constants(),
+# which coerces scientific-notation strings to float defensively.
 #
 # Provenance tag on every value:
-#   paper    — arXiv:2605.00515, NOW TITLED "SpaceMoE" (v2 retitle from
-#              "Space Network of Experts"/Space-XNet, Track C 2026-08-18).
-#              Cite as SpaceMoE. Constants verified against the PDF by Track
-#              C (Sec VII-A1/A2); the token latency is Table II's 1.02-1.07
-#              s/token RANGE, not a single 1.03 number.
+#   paper    — arXiv:2605.00515 (SpaceMoE). Constants verified against the PDF;
+#              the token latency is Table II's 1.02-1.07 s/token RANGE.
 #   spec     — public datasheet or cited paper; cite directly.
 #   estimate — our assumption; needs a sensitivity check before camera-ready.
 #   derived  — computed from tagged values above.
@@ -29,16 +25,16 @@ physical:
 # `satellite` means the image is captured on the ingress satellite (no
 # uplink term); `ground` means the request uplinks its payload at the uplink
 # rate. The result always downlinks from the last component's satellite via
-# the nearest AoI-visible satellite at the downlink rate (Clockwork model,
-# 2026-09-01). Ka-band gateway-class rates.
+# the nearest AoI-visible satellite at the downlink rate. Ka-band
+# gateway-class rates.
 links:
   ground_uplink_gbps:   {value: 2.5, prov: estimate}
   ground_downlink_gbps: {value: 1.0, prov: estimate}
 
 # The planning cycle: one sidereal day. Evaluation shells sit at
 # repeat-ground-track altitudes (15 and 14 revolutions per sidereal day), so
-# the AoI-relative geometry repeats exactly every cycle in the two-body model
-# (Clockwork decision, 2026-09-01). IERS value.
+# the AoI-relative geometry repeats exactly every cycle in the two-body model.
+# IERS value.
 cycle:
   sidereal_day_s: {value: 86164.0905, prov: spec}
 
@@ -52,7 +48,7 @@ constellations:
     n_planes: 33
     sats_per_plane: 32
     phasing_f: 13
-    isl_rate_gbps: 100.0   # SpaceMoE states ">=100 Gbps", a floor; we use the floor (Track C)
+    isl_rate_gbps: 100.0   # SpaceMoE states ">=100 Gbps", a floor; we use the floor
     link_survival: 0.95
     prov: paper
   starlink-s1:
@@ -61,7 +57,7 @@ constellations:
     inclination_deg: 53.0
     n_planes: 72
     sats_per_plane: 22
-    phasing_f: null        # "F per shell documentation" (brief); left unresolved
+    phasing_f: null
     isl_rate_gbps: 100.0
     link_survival: 0.95
     prov: spec
@@ -85,7 +81,7 @@ constellations:
     isl_rate_gbps: 100.0
     link_survival: 0.95
     prov: spec
-  # Controlled pair (E1): identical in every parameter except RAAN span (the
+  # Controlled pair: identical in every parameter except RAAN span (the
   # topology class), so the Star-vs-Delta path-cost difference they exhibit is
   # the pure seam effect with inclination held fixed. Not a real system.
   ctrl-star:
@@ -109,10 +105,10 @@ constellations:
     link_survival: 0.95
     prov: estimate
 
-# Verified geometry, derived and cross-checked by hand (brief Section 5 and
-# DERIVATIONS.md). These are the substrate sanity-test targets: the walker must
-# reproduce each within 1 percent. Intra-plane hop d = 2 a sin(pi/Ny); inter-plane
-# equatorial hop = 2 a sin(dOmega/2) with dOmega = pi/Nx (star) or 2 pi/Nx (delta).
+# Verified geometry, derived and cross-checked by hand. These are the substrate
+# sanity-test targets: the walker must reproduce each within 1 percent.
+# Intra-plane hop d = 2 a sin(pi/Ny); inter-plane equatorial hop = 2 a sin(dOmega/2)
+# with dOmega = pi/Nx (star) or 2 pi/Nx (delta).
 verified_hops:
   intra_plane_ms:            # d = 2 a sin(pi / Ny), a = R + h
     ref-star:    {value: 4.53, prov: derived}
@@ -125,18 +121,18 @@ verified_hops:
     kuiper-s1:   {value: 4.31, prov: derived}
     oneweb:      {value: 6.59, prov: derived}
   # Invariant: a/c is 23.1 to 25.3 ms/rad across all four; results are quoted in
-  # hop-equivalents for portability (brief Section 5).
+  # hop-equivalents for portability.
 
-# Hardware ladder. Since 2026-08-25 detector execution times come from MEASURED
-# per-device profiles in ladders/*.yaml (lab.profiles); the roofline
+# Hardware ladder. Detector execution times come from MEASURED per-device profiles
+# in ladders/*.yaml (lab.profiles); the roofline
 # T_exec = max(FLOPs/(f_peak * duty), bytes/BW) is only the fallback for devices
-# without published measurements (RAD5545, SBC-2A72, Orin until the k6
-# measurement). duty_cycle therefore matters only on the fallback path.
+# without published measurements (RAD5545, SBC-2A72). duty_cycle therefore
+# matters only on the fallback path.
 duty_cycle: {value: 0.70, prov: paper}   # thermal utilization u (SpaceMoE)
 
 devices:
   RAD5545:
-    peak_flops:   {value: 3.7e9,   prov: paper}      # 3.7 GFLOPS; BAE datasheet, verify
+    peak_flops:   {value: 3.7e9,   prov: paper}      # 3.7 GFLOPS; BAE datasheet
     mem_bytes:    {value: 4.0e9,   prov: paper}
     mem_bw_bytes_s: {value: 3.0e9, prov: estimate}   # DDR-class estimate
   SBC-2A72:
@@ -148,11 +144,9 @@ devices:
     mem_bytes:    {value: 24.0e9,  prov: spec}       # 24 GB DDR4 ECC, Unibap datasheet
     mem_bw_bytes_s: {value: 30.0e9, prov: estimate}  # the one sensitive bandwidth estimate
     note: >
-      Verified (Track C, 2026-08-18): 26 TOPS traces to the SpaceCloud
-      iX10-102 variant (Hailo-8 M.2, "up to 26 TOPS at 8-bit" per Hailo
-      datasheet). The iX10-101 (Movidius Myriad X) is only ~4 TOPS. Paper and
-      prose must say "iX10-102 (Hailo-8)". Open: whether SpaceMoE Table I
-      means the -102. INT8 vs FP mismatch still a placeholder pending E2a.
+      26 TOPS traces to the SpaceCloud iX10-102 variant (Hailo-8 M.2,
+      "up to 26 TOPS at 8-bit" per Hailo datasheet). The iX10-101
+      (Movidius Myriad X) is only ~4 TOPS. Prose must say "iX10-102 (Hailo-8)".
   Orin:
     peak_flops:   {value: 275.0e12, prov: spec}      # Jetson AGX Orin, 275 TOPS INT8 sparse
     mem_bytes:    {value: 64.0e9,   prov: spec}
@@ -162,21 +156,20 @@ devices:
     mem_bytes:    {value: 8.0e9,    prov: spec}
     mem_bw_bytes_s: {value: 102.0e9, prov: spec}
     note: >
-      MEASURED DEVICE (2026-08-25): YOLOv8
-      batch-1 FP16 PyTorch latencies in ladders/yolo_coco.yaml, prov
-      measured; raw log in ladders/provenance/. Roofline underestimates it
-      by 14-139x at batch 1 (launch-overhead-bound), the strongest evidence
-      for the measured-profiles decision.
+      Measured device: YOLOv8 batch-1 FP16 PyTorch latencies in
+      ladders/yolo_coco.yaml, prov measured; raw log in ladders/provenance/.
+      Roofline underestimates it by 14-139x at batch 1 (launch-overhead-bound),
+      the strongest evidence for the measured-profiles decision.
   H100:
-    peak_flops:   {value: 989.0e12, prov: spec}      # H100 SXM FP16 dense, DERIVED as half of
-                                                     # the datasheet's 1979 TFLOPS FP16 sparse
-                                                     # (Track C verified); on orbit per Starcloud-1
+    peak_flops:   {value: 989.0e12, prov: spec}      # H100 SXM FP16 dense, half of the
+                                                     # datasheet's 1979 TFLOPS FP16 sparse;
+                                                     # on orbit per Starcloud-1
     mem_bytes:    {value: 80.0e9,   prov: spec}
     mem_bw_bytes_s: {value: 3.35e12, prov: spec}
 
-# Provisioning price vector (decision 2026-08-19, Option A cost formulation).
-# Relative cost units, monotone in hardware cost; the frontier SHAPE is robust
-# to any monotone vector (stated in prose), so absolute values are estimates.
+# Provisioning price vector. Relative cost units, monotone in hardware cost;
+# the frontier SHAPE is robust to any monotone vector (stated in prose), so
+# absolute values are estimates.
 prices:
   RAD5545:  {value: 1.0,  prov: estimate}
   SBC-2A72: {value: 2.0,  prov: estimate}
@@ -185,22 +178,21 @@ prices:
   Orin:     {value: 8.0,  prov: estimate}
   H100:     {value: 50.0, prov: estimate}
 
-# Fleet mixes for evaluation (brief Section 5). E0 uses sparse-strong.
+# Fleet mixes for evaluation.
 # fractions: seeded per-node class assignment; strong_classes: classes the
 # candidate search detours to; base: the class the sensor is drawn from.
 fleet_mixes:
   all-mid-tier:  {description: "every node iX10-class", prov: estimate}
   sparse-strong: {strong_device: H100, strong_fraction: 0.02, rest_device: iX10, prov: estimate}
   graded:
-    # Mid-tier is the MEASURED OrinNano, not the unmeasured
-    # AGX Orin (2026-08-25).
+    # Mid-tier is the MEASURED OrinNano, not the unmeasured AGX Orin.
     fractions: {H100: 0.02, OrinNano: 0.08, iX10: 0.5, SBC-2A72: 0.4}
     strong_classes: [H100, OrinNano]
     base: iX10
     prov: estimate
 
-# E0 worked-example workload (brief Section 7). Fixed-cost components in GFLOPs,
-# data volumes in bytes. The detect ladder lives in ladders/yolo_coco.yaml.
+# Worked-example workload. Fixed-cost components in GFLOPs, data volumes in bytes.
+# The detect ladder lives in ladders/yolo_coco.yaml.
 e0:
   aoi: {description: "mid-latitude region", prov: estimate}
   constellation: ref-star
@@ -216,11 +208,5 @@ e0:
     spread:  {flops: {value: 2.0e9, prov: estimate}, out_bytes: {value: 1.0e6, prov: estimate}}
     alert:   {out_bytes: {value: 10.0e3, prov: estimate}}                      # 10 KB
   slo_seconds: {value: 2.0, prov: estimate}
-  # SLO calibration (disclosed, brief Sections 6-7): with the 500-crop COCO-scale
-  # placeholder ladder the iX10 detect compute spans ~0.2 s (n) to ~7 s (x). A
-  # tens-of-seconds SLO would not bind the weak node (it affords x at ~7 s), which
-  # would hide the mechanism. The SLO is therefore set in the low-seconds range so
-  # the weak-node compute cap is visible. E2a's fire-specific ladder and real crop
-  # counts are expected to restore the tens-of-seconds regime from ground-contact
-  # physics. Only the SLO is chosen; FLOPs, mAP, device throughputs, and hop count
-  # k are all measured or cited. RESULTS.md reports the accuracy gap across SLOs.
+  # SLO is set in the low-seconds range so the weak-node compute cap is visible.
+  # FLOPs, mAP, device throughputs, and hop count k are all measured or cited.

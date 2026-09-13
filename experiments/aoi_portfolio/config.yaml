@@ -3,8 +3,8 @@
 # medians over epochs x seeds. Primary axis: a latitude sweep (lon fixed);
 # the named AoIs remain as examples. Infeasible cells are outcomes.
 seed: 0
-# Symmetric provider (2026-09-01): identical hardware distributions in both
-# shells so the sweep isolates orbital geometry from fleet composition.
+# Symmetric provider: identical hardware distributions in both shells so
+# the sweep isolates orbital geometry from fleet composition.
 provider: mvp-main-symmetric
 slo_ms: 300
 fleet_seeds: [0, 1, 2, 3, 4]

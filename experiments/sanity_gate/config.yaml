@@ -1,4 +1,4 @@
-# P0 sanity gate (pivot master setup): the go/no-go before any sweep.
+# Sanity gate: correctness check before any sweep.
 # Expected: tight SLO -> expensive nearby GPU planes; loose SLO -> cheap
 # distant CPU capacity; cost monotone non-increasing in the SLO.
 seed: 0

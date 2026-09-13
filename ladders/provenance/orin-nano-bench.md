@@ -1,11 +1,11 @@
-# Jetson Orin Nano Super YOLOv8 benchmark (ours), 2026-08-25
+# Jetson Orin Nano Super YOLOv8 benchmark
 
 - Device: NVIDIA Jetson Orin Nano Engineering Reference Developer Kit Super
   (measurement cluster, /proc/device-tree/model verified).
 - Method: pod ultralytics/ultralytics:latest-jetson-jetpack6 (torch 2.10.0,
   CUDA true), batch-1 FP16 PyTorch predict, imgsz 640, random image, 5
   warmup + 30 timed iters, Ultralytics per-image inference ms, median.
-- Co-tenancy: node shared with an idle ray-testbed worker; GR3D_FREQ 0%
+- Co-tenancy: node shared with an idle worker; GR3D_FREQ 0%
   before and after; a MemAvailable guard skipped models that could pressure
   the co-tenant (yolov8x skipped at 2.7 GB available).
 - Results (median / mean / p95 ms per image):

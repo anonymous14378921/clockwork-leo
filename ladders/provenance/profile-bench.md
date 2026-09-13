@@ -1,27 +1,24 @@
-# Latency profile benchmark on the measurement cluster cluster, 2026-09-03
+# Latency profile benchmark
 
 Batch-1 per-request latency of the three chain components on real devices,
-to replace the estimated rows of `data/profiles/workflow_mvp.csv`. Raw JSON
-and logs: `bench/results/2026-09-03/`. Tooling: `bench/profile_bench.py`
-(PyTorch), `bench/ollama_bench.py` (Ollama, llama.cpp server), pods in
-`bench/pods*.yaml`, launched with `just bench` / `just bench-ollama` on measurement cluster.
+to replace the estimated rows of `data/profiles/workflow_mvp.csv`.
 
 ## Devices
 
-| pod | node | device | runtime |
-|---|---|---|---|
-| bench-pi5 | pi50 | Raspberry Pi 5, 4x Cortex-A76, 8 GB | torch 2.14 cpu, 4 threads |
-| bench-orin (cpu) | jetson-50 | Orin Nano Super ARM cores, 6x Cortex-A78AE | torch 2.10, 6 threads |
-| bench-4090 (cpu) | ai2 | AMD Ryzen 9 7950X | torch 2.11, 8 threads |
-| bench-orin | jetson-50 | NVIDIA Jetson Orin Nano Super, JetPack 6, CUDA 12.6 | torch 2.10, FP16 |
-| bench-4090 | ai2 | NVIDIA GeForce RTX 4090 24 GB, driver 535 | torch 2.11 cu128, FP16 |
-| ollama-orin | jetson-50 | same Orin, GPU (cuda_jetpacmeasurement cluster runner) | Ollama 0.33.3, fp16 GGUF |
-| ollama-4090 | ai2 | same 4090, GPU (CUDA 11 runner) | Ollama 0.5.13, fp16 GGUF |
+| pod | device | runtime |
+|---|---|---|
+| bench-pi5 | Raspberry Pi 5, 4x Cortex-A76, 8 GB | torch 2.14 cpu, 4 threads |
+| bench-orin (cpu) | Orin Nano Super ARM cores, 6x Cortex-A78AE | torch 2.10, 6 threads |
+| bench-4090 (cpu) | AMD Ryzen 9 7950X | torch 2.11, 8 threads |
+| bench-orin | NVIDIA Jetson Orin Nano Super, JetPack 6, CUDA 12.6 | torch 2.10, FP16 |
+| bench-4090 | NVIDIA GeForce RTX 4090 24 GB, driver 535 | torch 2.11 cu128, FP16 |
+| ollama-orin | same Orin, GPU | Ollama 0.33.3, fp16 GGUF |
+| ollama-4090 | same 4090, GPU (CUDA 11 runner) | Ollama 0.5.13, fp16 GGUF |
 
 Protocol: 5 warmup + 30 timed runs (LLM: 3 + 10), median of wall time per
 request with cuda synchronized. Detector: YOLOv8m, imgsz 640, Ultralytics
 predict, random image; wall = preprocess + inference + postprocess, and the
-Ultralytics inference-only figure is kept (the 2026-08-25 row used it).
+Ultralytics inference-only figure is kept for comparison.
 Classifier: torchvision ResNet-50, 224x224. LLM: Qwen2.5-0.5B-Instruct and
 1.5B-Instruct, fixed 85-token chat prompt, greedy, 32 new tokens.
 
@@ -45,7 +42,7 @@ gpu_large 1.8; classifier 95 / 8 / 0.9; llm gpu_small 420 / gpu_large 105.
 
 ## Reading
 
-- The Orin detector inference-only number reproduces the 2026-08-25 row
+- The Orin detector inference-only number reproduces the earlier measurement
   exactly (35.3 ms). End to end it is 96.6 ms: pre and post processing on
   the ARM cores cost more than the GPU pass.
 - PyTorch eager is the wrong LLM runtime on small GPUs: 120 ms per token on
@@ -60,15 +57,12 @@ gpu_large 1.8; classifier 95 / 8 / 0.9; llm gpu_small 420 / gpu_large 105.
 
 ## Co-tenancy and caveats
 
-- GPU pods ran without a `nvidia.com/gpu` claim (claims held by idle
-  ray-testbed workers), through the nvidia runtime class. GPU utilization
-  0 percent before each run on the 4090; the Orin shares RAM with the idle
-  worker (3.4 to 4.2 GB available), which is why the 1.5B models failed.
-- Ollama 0.5.13 on ai2 because newer images need driver >= 550 and silently
-  fall back to CPU (first attempt did; discarded). Ollama latest on the Orin
-  because 0.5.13 is glibc 2.31 and the JetPack 6 libraries need 2.34.
+- GPU pods ran without a `nvidia.com/gpu` claim, through the nvidia runtime
+  class. GPU utilization 0 percent before each run on the 4090; the Orin
+  shares RAM with the idle worker (3.4 to 4.2 GB available), which is why
+  the 1.5B models failed.
+- Ollama 0.5.13 on the 4090 because newer images need driver >= 550 and
+  silently fall back to CPU (first attempt did; discarded). Ollama latest on
+  the Orin because 0.5.13 is glibc 2.31 and the JetPack 6 libraries need 2.34.
 - Two port-forwards on one local port made a first Orin Ollama run measure
   the 4090 pod; discarded, the script now uses per-pod ports.
-- jetson-50 ran out of ephemeral storage once (7.7 GB image + model
-  caches); the evicted pod was recreated. The node's kubelet stopped
-  answering after the 1.5B load attempt; pods were deleted afterwards.

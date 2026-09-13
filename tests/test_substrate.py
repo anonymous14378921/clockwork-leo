@@ -45,7 +45,7 @@ def test_inter_plane_equator_hop_matches_verified(name):
 
 
 def test_invariant_a_over_c_ms_per_rad():
-    # Brief Section 5: a/c is 23.1 to 25.3 ms/rad across all four constellations.
+    # a/c is 23.1 to 25.3 ms/rad across all four constellations.
     for name in ALL:
         w = Walker.from_constellation(name)
         ms_per_rad = w.a_km / (C.to_float(C.val(C.load_constants()["physical"]["c_m_s"])) / 1e3) * 1e3

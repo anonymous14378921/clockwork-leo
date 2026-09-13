@@ -1,3 +1,5 @@
+# Source run must be generated first: just run pollux_timeline
+# then update the path below to point to the generated results directory.
 source_run: results/pollux_timeline/20260908-210755
 provider: mvp-main
 aoi: {lat: 48.21, lon: 16.37}
@@ -6,4 +8,3 @@ slo_ms: 300
 planning_steps: 1440
 replay_steps_s: [5, 1]
 workers: 8
-

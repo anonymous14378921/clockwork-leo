@@ -1,15 +1,11 @@
-# wildfire.yaml — primary compound-AI workflow (v2, cascade reframe 2026-08-25).
+# wildfire.yaml — primary compound-AI workflow.
 #
 # Wildfire monitoring over an AoI. Data volume collapses from hundreds of MB at
-# ingest to KB at alert. The accuracy-bearing part is a Compass-style detection
-# CASCADE: a light detector processes every crop, and crops whose confidence
-# falls below a threshold are forwarded to a heavier verifier. Workflow accuracy
-# is the MEASURED end-to-end mAP@0.5 of the cascade configuration
-# (detector, verifier, threshold), following the Compass evaluation protocol;
-# no composition formula, no recall-factor multiplication (dropped 2026-08-25).
-# The measured grid comes from the Compass artifact or our own rerun of its
-# open-source pipeline; until it lands, lab.configurations serves a
-# clearly-flagged placeholder grid (prov: estimate).
+# ingest to KB at alert. The accuracy-bearing part is a detection CASCADE: a
+# light detector processes every crop, and crops whose confidence falls below a
+# threshold are forwarded to a heavier verifier. Workflow accuracy is the
+# MEASURED end-to-end mAP@0.5 of the cascade configuration
+# (detector, verifier, threshold).
 #
 # component fields:
 #   kind        ml | fixed | io
@@ -27,8 +23,6 @@ cascade:
   verify_stage: verify
   detectors: [YOLOv8n, YOLOv8s, YOLOv8m]
   verifiers: [YOLOv8m, YOLOv8l, YOLOv8x, none]
-  # Seven thresholds spanning 0.1-0.5 (Compass VI.B); tick values aligned to the
-  # artifact grid when it lands.
   thresholds: [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
   ladder: yolo_coco             # per-device measured latency profiles
 slo_slack_factor: 3.0           # slack paths tolerate slack_factor * SLO (estimate)
