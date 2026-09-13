@@ -2,6 +2,8 @@
 
 **Scheduling Compound AI Workflows in Space Data Centers**
 
+> **[Wiki](../../wiki)** — full system model, algorithm complexity analysis, and additional experiments beyond the paper.
+
 Clockwork is a planning framework for provisioning compound AI workflows on LEO satellite constellations under end-to-end latency SLOs. It uses predicted orbital geometry to plan provisioning decisions across constellation snapshots, jointly optimizing plane activation, component placement, and reprovisioning cost over time.
 
 Clockwork relies on two algorithms:
@@ -51,17 +53,6 @@ workflows/            compound AI workflow DAG definitions
 ladders/              measured component execution profiles
 ```
 
-## Documentation
-
-See the **[Wiki](../../wiki)** for full companion documentation:
-
-- [System Model](../../wiki/System-Model) — orbital mechanics, provisioning formulation, evaluation configuration
-- [Castor](../../wiki/Castor) — per-snapshot provisioning algorithm and complexity analysis
-- [Pollux](../../wiki/Pollux) — cyclic scheduling algorithm and complexity analysis
-- [Experiments](../../wiki/Experiments) — all experiments with descriptions and paper references
-- [Reproducibility](../../wiki/Reproducibility) — installation, running experiments, output structure
-- [HyperDrive Baseline](../../wiki/HyperDrive-Baseline) — adapted baseline with fidelity checks
-
 ## Running experiments
 
 Every experiment is invoked through the justfile:
@@ -70,7 +61,7 @@ Every experiment is invoked through the justfile:
 just run <experiment>     # e.g., just run calendar_scheduling
 ```
 
-Each run writes its configuration, source revision, and hardware manifest into `results/<experiment>/<timestamp>/` for full provenance.
+Each run writes its configuration, source revision, and hardware manifest into `results/<experiment>/<timestamp>/` for full provenance. See the [Reproducibility](../../wiki/Reproducibility) guide for details.
 
 ## License
 

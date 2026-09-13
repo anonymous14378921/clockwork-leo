@@ -1,0 +1,22 @@
+# Scalability: Castor planning time and pool size as constellation grows.
+# Single-snapshot Castor call per fleet size. Workflow depth sweep on 12x16.
+aoi: {lat: 48.21, lon: 16.37}
+slo_ms: 300
+fleet_seed: 0
+slack: 5
+switch_cost: 5
+
+constellation_sweep:
+  - {planes: 4, sats: 8}
+  - {planes: 6, sats: 12}
+  - {planes: 8, sats: 16}
+  - {planes: 12, sats: 16}
+  - {planes: 16, sats: 20}
+  - {planes: 24, sats: 24}
+  - {planes: 32, sats: 32}
+  - {planes: 48, sats: 48}
+  - {planes: 64, sats: 64}
+  - {planes: 100, sats: 100}
+
+workflow_depth_sweep: [2, 3, 4, 5, 6]
+workflow_depth_fleet: {planes: 12, sats: 16}
